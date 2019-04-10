@@ -1,21 +1,14 @@
-Branch for hosting the [webpage for TeMoto 2](https://utnuclearroboticspublic.github.io/temoto2)
+Branch for hosting the [webpage for TeMoto](https://temoto-telerobotics.github.io/)
 
 The source files are stored in "src/" and the webpage is built into the "site/", meaning that this branch is not using github's webpage generator (because it has a limited list of supported plugins).
 
 ## Setup
 
-**1) Clone the "gh-pages" branch:**
+**1) Clone this github.io repository:**
 
 ```
-git clone -b gh-pages https://github.com/UTNuclearRoboticsPublic/temoto2.git
+git clone https://github.com/temoto-telerobotics/temoto-telerobotics.github.io
 ```
-Or if you already have temoto2, then:
-```
-roscd temoto2
-git fetch origin gh-pages
-git checkout gh-pages
-```
-Although if you are developing Temoto and you want to modify the gh-pages, then stashing uncommited changes and checking out to appropriate branch might be inconvenient. In this case the easiest thing to do is to clone temoto gh-pages branch to a separate place.
 
 **2) Set up ruby, bundler, jekyll locally:**
 
@@ -25,13 +18,13 @@ If you encounter some permission issues while installing bundler gem, then I did
 
 **3) Install Jekyll and other dependencies from the GitHub Pages gem:**
 ```
-cd temoto2/src
+cd temoto-telerobotics.github.io/src
 bundle install
 ```
 
 **4) Build the website:**
 
-Each time you modify the content, the website has to be built. Go to the temoto2 (gh-pages branch) root folder and run:
+Each time you modify the content, the website has to be built. Go to the temoto-telerobotics.github.io (gh-pages branch) root folder and run:
 ```
 jekyll build --source ./src --destination ./site
 ```
@@ -43,13 +36,13 @@ jekyll build --source ./src --destination ./site --watch
 **5) Run the Jekyll site locally:**
 
 ```
-cd temoto2/src
+cd temoto-telerobotics.github.io/src
 bundle exec jekyll serve
 ```
 
 ## How to add/modify web content
 
-As previously mentioned, the source content is in the "*temoto2/src*" directory. This directory contains bunch of files and folders.
+As previously mentioned, the source content is in the "*temoto-telerobotics.github.io/src*" directory. This directory contains bunch of files and folders.
 
 **1) Folders:**
 
