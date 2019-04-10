@@ -1,0 +1,16 @@
+# Ignore temp and build files
+_site/
+.sass-cache/
+
+# Ignore vim temp files
+*.swp
+
+# Ignore gedit temp files
+*~
+
+# Ignore QtCreator temp files
+*.user
+
+# Ignore docs
+*/doc/html
+*/doc/manifest.yaml
