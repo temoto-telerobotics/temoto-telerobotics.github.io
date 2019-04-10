@@ -1,4 +1,4 @@
 theme: jekyll-theme-minimal
-baseurl: /temoto-telerobotics.githubub.io/site
+baseurl: /temoto-telerobotics.github.io/site
 plugins: 
   - jekyll-github-metadata

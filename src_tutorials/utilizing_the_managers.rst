@@ -1,16 +1,16 @@
 Utilizing the Managers
 ======================
 
-.. note:: This tutorial assumes that you are familiar with the concept of `Actions <../../../temoto-telerobotics.githubub.io/site/concepts/actions>`_ and `Managers <../../../temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#managers>`_ in TeMoto.
+.. note:: This tutorial assumes that you are familiar with the concept of `Actions <../../../temoto-telerobotics.github.io/site/concepts/actions>`_ and `Managers <../../../temoto-telerobotics.github.io/site/p_conceptual_overview.html#managers>`_ in TeMoto.
 
-Actions can utilize the functionality of any particular manager through its interface. The aim of this tutorial is to show what are the common procedures for setting up and using manager interfaces. As a concrete example, this tutorial shows how to start a camera via `Sensor Manager <../../../temoto-telerobotics.githubub.io/site/managers/sensor_manager>`_ interface.
+Actions can utilize the functionality of any particular manager through its interface. The aim of this tutorial is to show what are the common procedures for setting up and using manager interfaces. As a concrete example, this tutorial shows how to start a camera via `Sensor Manager <../../../temoto-telerobotics.github.io/site/managers/sensor_manager>`_ interface.
 
-Hence, due the example we are trying to go for, it is required that you have a ROS package that is able to open stream the camera feed. The `"usb_cam" <http://wiki.ros.org/usb_cam>`_ package will work just fine. And since TeMoto and its ideas are not de facto standards in the ROS community, you have to add a `sensor descriptor <../../../temoto-telerobotics.githubub.io/site/concepts/resource_descriptions>`_ to the "usb_cam" package, which tells what kind of cameras are available and what kind of topics they output.
+Hence, due the example we are trying to go for, it is required that you have a ROS package that is able to open stream the camera feed. The `"usb_cam" <http://wiki.ros.org/usb_cam>`_ package will work just fine. And since TeMoto and its ideas are not de facto standards in the ROS community, you have to add a `sensor descriptor <../../../temoto-telerobotics.github.io/site/concepts/resource_descriptions>`_ to the "usb_cam" package, which tells what kind of cameras are available and what kind of topics they output.
 
 1) Create/Open the action source file 
 """""""""""""""""""""""""""""""""""""
 
-For this particular tutorial we are going to create an action that is verbally invoked by sentence: *"Start the camera"*. Follow the `"Writing an Action" </temoto-telerobotics.githubub.io/tutorials/writing_an_action.html>`_ tutorial if you are not familiar with the process of creating actions.
+For this particular tutorial we are going to create an action that is verbally invoked by sentence: *"Start the camera"*. Follow the `"Writing an Action" </temoto-telerobotics.github.io/tutorials/writing_an_action.html>`_ tutorial if you are not familiar with the process of creating actions.
 
 Once you have created or located your action, open up the action source file under *"src"* directory of your action package. 
 

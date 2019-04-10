@@ -7,14 +7,14 @@ layout: default
 
 # Agent
 <hr>
-[Back to Supervisory Layer](/temoto-telerobotics.githubub.io/site/layers/supervisory_layer) <br>
-[Back to Architecture](/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#architecture) <br>
+[Back to Supervisory Layer](/temoto-telerobotics.github.io/site/layers/supervisory_layer) <br>
+[Back to Architecture](/temoto-telerobotics.github.io/site/p_conceptual_overview.html#architecture) <br>
 <br>
 
-**The Agent** is the core subsystem of TeMoto 2.0, acting as an interface for the operator. It grounds the instructions in Natural Language (NL) into machine executable format which is subsequently executed. The NL grounding framework utilizes and builds upon the concept of [Semantic Frames (SF)](/temoto-telerobotics.githubub.io/site/concepts/actions.html#semantic_frames).
+**The Agent** is the core subsystem of TeMoto 2.0, acting as an interface for the operator. It grounds the instructions in Natural Language (NL) into machine executable format which is subsequently executed. The NL grounding framework utilizes and builds upon the concept of [Semantic Frames (SF)](/temoto-telerobotics.github.io/site/concepts/actions.html#semantic_frames).
 
 <p align="center" >
-  <img width="500" src="/temoto-telerobotics.githubub.io/site/doc/images/nlp_pipeline.png">
+  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/nlp_pipeline.png">
   <br>
   <b> Fig. 1: </b> Natural language processing pipeline. 
 </p>

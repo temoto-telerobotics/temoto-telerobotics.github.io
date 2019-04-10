@@ -66,7 +66,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 <details>
   <summary style="font-weight:bold"> 
     Supervisory Layer  
-    <a href="/temoto-telerobotics.githubub.io/site/layers/supervisory_layer" style="float: right;">detailed overview</a> 
+    <a href="/temoto-telerobotics.github.io/site/layers/supervisory_layer" style="float: right;">detailed overview</a> 
   </summary>
 
   <blockquote>
@@ -76,7 +76,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 
     <b>Subsystems in this layer:</b>
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/agent">Agent</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/agent">Agent</a></summary>
       <blockquote>
         The Agent is the core subsystem of TeMoto 2.0, acting as an interface for the operator. It grounds the instructions 
         in Natural Language (NL) into machine executable format which is subsequently executed.  
@@ -84,7 +84,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
     </details>
 
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/health_monitor">Health Monitor</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/health_monitor">Health Monitor</a></summary>
       <blockquote>
         The Health Monitor is a subsystem that gathers information about the use of resources and the state of other subsystems.  
       </blockquote>
@@ -99,7 +99,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 <details>
   <summary style="font-weight:bold"> 
     Management Layer  
-    <a href="/temoto-telerobotics.githubub.io/site/layers/management_layer" style="float: right;">detailed overview</a> 
+    <a href="/temoto-telerobotics.github.io/site/layers/management_layer" style="float: right;">detailed overview</a> 
   </summary>
 
   <blockquote>
@@ -109,14 +109,14 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 
     <b>Subsystems in this layer:</b>
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/context_manager">Context Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/context_manager">Context Manager</a></summary>
       <blockquote>
         The Context Manager is responsible of perceiving the environment through a combination of sensors and data processing algorithms.
       </blockquote>
     </details>
 
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/robot_manager">Robot Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/robot_manager">Robot Manager</a></summary>
       <blockquote>
         The Robot Manager maintains knowledge about robotic devices including manipulators, grippers, and mobile bases. 
         A single device or an assembly (physical or virtual) of the aforementioned devices compose a robot which is viewed as a resource. 
@@ -124,21 +124,21 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
     </details>
 
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/sensor_manager">Sensor Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/sensor_manager">Sensor Manager</a></summary>
       <blockquote>
         The Sensor Manager maintains knowledge (sensor descriptions) about different types of sensors and directs the data flow of a requested device.  
       </blockquote>
     </details>
 
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/algorithm_manager">Algorithm Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/algorithm_manager">Algorithm Manager</a></summary>
       <blockquote>
         The Algorithm Manager maintains knowledge (algorithm descriptions) about different types of algorithms and directs the data flow of a requested algorithm.  
       </blockquote>
     </details>
 
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/output_manager">Output Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/output_manager">Output Manager</a></summary>
       <blockquote>
         The Output Manager provides the functionality to output audio-visual data. Similarly to the Sensor Manager, 
         the Output Manager maintains descriptions about different types of output methods and how to access them.  
@@ -153,7 +153,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 <details>
   <summary style="font-weight:bold"> 
     Resource Access Layer  
-    <a href="/temoto-telerobotics.githubub.io/site/layers/resource_access_layer" style="float: right;">detailed overview</a> 
+    <a href="/temoto-telerobotics.github.io/site/layers/resource_access_layer" style="float: right;">detailed overview</a> 
   </summary>
 
   <blockquote>
@@ -163,7 +163,7 @@ Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) ca
 
     <b>Subsystems in this layer:</b>
     <details>
-      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/external_resource_manager">External Resource Manager</a></summary>
+      <summary><a href="/temoto-telerobotics.github.io/site/managers/external_resource_manager">External Resource Manager</a></summary>
       <blockquote>
         The role of the Resource Manager is to initiate external resources, via ROS nodes and launch files, upon a request. 
         The Resource Manager is primarily used by the Management layer for initiating sensors, data processing algorithms, 

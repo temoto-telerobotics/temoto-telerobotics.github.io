@@ -7,9 +7,9 @@ layout: default
 
 # Resource Access Layer
 <hr>
-[Back to Architecture](/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#architecture) <br>
+[Back to Architecture](/temoto-telerobotics.github.io/site/p_conceptual_overview.html#architecture) <br>
 <br>
 
 
 
-[Back to Architecture](/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#architecture)
+[Back to Architecture](/temoto-telerobotics.github.io/site/p_conceptual_overview.html#architecture)

@@ -10,7 +10,7 @@ layout: default
 
 <br>
 
-Resource descriptions help the managers of TeMoto to locate [resources](/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#resources). For example if you have a LIDAR you want to use, and the LIDAR has a ROS driver package (such as [urg_node](http://wiki.ros.org/urg_node)), then the resource description for this given device (more percisely - sensor description) contains information about the sensor type, package name, launch files/nodes and according input/output topics.
+Resource descriptions help the managers of TeMoto to locate [resources](/temoto-telerobotics.github.io/site/p_conceptual_overview.html#resources). For example if you have a LIDAR you want to use, and the LIDAR has a ROS driver package (such as [urg_node](http://wiki.ros.org/urg_node)), then the resource description for this given device (more percisely - sensor description) contains information about the sensor type, package name, launch files/nodes and according input/output topics.
 
 TeMoto has 4 different resource description types, described in YAML format. Each of them has to have according YAML file name:
 * ***Sensor Descriptions*** - sensor_description.yaml
