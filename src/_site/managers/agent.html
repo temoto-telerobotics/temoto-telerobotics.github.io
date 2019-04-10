@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+
+<h1 id="agent">Agent</h1>
+<hr />
+
+<p><a href="/temoto-telerobotics.githubub.io/site/layers/supervisory_layer">Back to Supervisory Layer</a> <br />
+<a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#architecture">Back to Architecture</a> <br />
+<br /></p>
+
+<p><strong>The Agent</strong> is the core subsystem of TeMoto 2.0, acting as an interface for the operator. It grounds the instructions in Natural Language (NL) into machine executable format which is subsequently executed. The NL grounding framework utilizes and builds upon the concept of <a href="/temoto-telerobotics.githubub.io/site/concepts/actions.html#semantic_frames">Semantic Frames (SF)</a>.</p>
+
+<p align="center">
+  <img width="500" src="/temoto-telerobotics.githubub.io/site/doc/images/nlp_pipeline.png" />
+  <br />
+  <b> Fig. 1: </b> Natural language processing pipeline. 
+</p>
+
+<p>The NL grounding flow in TeMoto 2.0 is shown in Fig 1. In idle state, the Agent continuously waits for instructions in a text format. Hence the source can range from an Automatic Speech Recognition (ASR) system to a remote terminal, given that all of the sources output NL as a string of text. The received text is first forwarded to Semantic Parser which extracts potential SFs from the text and arranges them into a SF tree. SF tree represents the hierarchical structure of the given instruction, indicating the chronological order and dependencies of SFs. Next, the SF tree is forwarded to Semantic Frame Finder, which attempts to find a match for the tree of potential SFs via a set of known (developer defined and built-in) SFs. The resolved SF tree is then converted to a executable format meaning that all the SF related shared libraries are loaded and arranged to be sequentially executed based on the structure of the SF tree.</p>
+
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>

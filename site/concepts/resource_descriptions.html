@@ -1,0 +1,224 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+
+<h1 id="resource-descriptions">Resource Descriptions</h1>
+<hr />
+
+<p><br /></p>
+
+<p>Resource descriptions help the managers of TeMoto to locate <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#resources">resources</a>. For example if you have a LIDAR you want to use, and the LIDAR has a ROS driver package (such as <a href="http://wiki.ros.org/urg_node">urg_node</a>), then the resource description for this given device (more percisely - sensor description) contains information about the sensor type, package name, launch files/nodes and according input/output topics.</p>
+
+<p>TeMoto has 4 different resource description types, described in YAML format. Each of them has to have according YAML file name:</p>
+<ul>
+  <li><strong><em>Sensor Descriptions</em></strong> - sensor_description.yaml</li>
+  <li><strong><em>Algorithm Descriptions</em></strong> - algorithm_description.yaml</li>
+  <li><strong><em>Tracker Descriptions</em></strong> - tracker_description.yaml</li>
+  <li><strong><em>Robot Descriptions</em></strong> - robot_description.yaml</li>
+</ul>
+
+<p>Following subsections specify the YAML format for each resource description type.</p>
+
+<h2 id="sensor-descriptions">Sensor Descriptions</h2>
+
+<p>A sensor description file can contain multiple descriptions under <em>“Sensors:”</em> tag (see the examples below). This means that you could put all sensor descriptions into a single sensor description file or you could keep your system modular and add an appropriate sensor description to according ros package.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Sensors</span><span class="pi">:</span>                        <span class="c1"># REQUIRED</span>
+<span class="pi">-</span> <span class="na">sensor_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">name_1"</span>         <span class="c1"># REQUIRED</span>
+  <span class="na">sensor_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">type_1"</span>         <span class="c1"># REQUIRED</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">package_1"</span>     <span class="c1"># REQUIRED</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">executable_1"</span>   <span class="c1"># REQUIRED - accepts launch file and node names</span>
+  <span class="na">output_topics</span><span class="pi">:</span>                <span class="c1"># REQUIRED</span>
+    <span class="na">output_topic_type_1</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_1"</span>
+    <span class="na">output_topic_type_2</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_2"</span>
+    <span class="na">output_topic_type_n</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_n"</span>
+
+<span class="pi">-</span> <span class="na">sensor_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">name_2"</span>
+  <span class="na">sensor_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">type_2"</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">package_2"</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">executable_2"</span>
+  <span class="na">output_topics</span><span class="pi">:</span>           
+    <span class="na">topic_type_1</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_1"</span>
+</code></pre></div></div>
+
+<p>Example:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Sensors</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">sensor_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Logitech</span><span class="nv"> </span><span class="s">Camera"</span>
+  <span class="na">sensor_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">camera"</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">usb_cam"</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">usb_cam-test.launch"</span>
+  <span class="na">output_topics</span><span class="pi">:</span>
+    <span class="na">camera_info</span><span class="pi">:</span> <span class="s2">"</span><span class="s">usb_cam/camera_info"</span>
+    <span class="na">camera_data</span><span class="pi">:</span> <span class="s2">"</span><span class="s">usb_cam/image_raw"</span>
+
+<span class="pi">-</span> <span class="na">sensor_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Hokuyo</span><span class="nv"> </span><span class="s">LIDAR"</span>
+  <span class="na">sensor_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">lidar"</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">urg_node"</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">urg_lidar.launch"</span>
+  <span class="na">output_topics</span><span class="pi">:</span>           
+    <span class="na">lidar_status</span><span class="pi">:</span> <span class="s2">"</span><span class="s">laser_status"</span>
+    <span class="na">lidar_data</span><span class="pi">:</span> <span class="s2">"</span><span class="s">scan"</span>
+</code></pre></div></div>
+
+<h2 id="algorithm-descriptions">Algorithm Descriptions</h2>
+
+<p>Algorithm descriptions are very similar to sensor descriptions. The difference is that in addition to ouput topics, algorithm descriptions also support input topics.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Algorithms</span><span class="pi">:</span>                                         <span class="c1"># REQUIRED</span>
+<span class="pi">-</span> <span class="na">algorithm_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">name"</span>                            <span class="c1"># REQUIRED</span>
+  <span class="na">algorithm_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">type"</span>                            <span class="c1"># REQUIRED</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">package_name"</span>                      <span class="c1"># REQUIRED</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">executable"</span>                         <span class="c1"># REQUIRED</span>
+  <span class="na">input_topics</span><span class="pi">:</span>                                     <span class="c1"># OPTIONAL</span>
+    <span class="na">input_topic_type_1</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_1"</span>
+    <span class="na">input_topic_type_2</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_2"</span>
+  <span class="na">output_topics</span><span class="pi">:</span>                                    <span class="c1"># OPTIONAL</span>
+    <span class="na">output_topic_type_1</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_1"</span>
+    <span class="na">output_topic_type_2</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_2"</span>
+    <span class="na">output_topic_type_n</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/name_of_the_ros_topic_n"</span>
+</code></pre></div></div>
+
+<p>Example:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">Algorithms</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">algorithm_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">AR</span><span class="nv"> </span><span class="s">tag</span><span class="nv"> </span><span class="s">detector"</span>
+  <span class="na">algorithm_type</span><span class="pi">:</span> <span class="s2">"</span><span class="s">artag"</span>
+  <span class="na">package_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ar_track_alvar"</span>
+  <span class="na">executable</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">pr2_indiv_no_kinect.launch"</span>
+  <span class="na">input_topics</span><span class="pi">:</span>
+    <span class="na">camera_info</span><span class="pi">:</span> <span class="s2">"</span><span class="s">camera_info"</span>
+    <span class="na">camera_data</span><span class="pi">:</span> <span class="s2">"</span><span class="s">usb_cam/raw"</span>
+  <span class="na">output_topics</span><span class="pi">:</span>
+    <span class="na">visualization_data</span><span class="pi">:</span> <span class="s2">"</span><span class="s">visualization_marker"</span>
+    <span class="na">marker_data</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ar_pose_marker"</span>
+</code></pre></div></div>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>

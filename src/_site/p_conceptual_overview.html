@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+         			
+				        <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#resources">&nbsp;&nbsp;&#8226; Resources</a>
+			          <br>
+		          
+				        <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#actions">&nbsp;&nbsp;&#8226; Actions</a>
+			          <br>
+		          
+				        <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#managers">&nbsp;&nbsp;&#8226; Managers</a>
+			          <br>
+		          
+				        <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html#all-together---the-architecture">&nbsp;&nbsp;&#8226; All together - The Architecture</a>
+			          <br>
+		          
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+
+<h1 id="conceptual-overview">Conceptual Overview</h1>
+<hr />
+
+<p><br /></p>
+
+<p>In order to get a good overview of how TeMoto works, the 3 key concepts that make up the <em>architecture</em> of TeMoto are introduced: <em>resources</em>, <em>actions</em> and <em>mangers</em>.</p>
+
+<h2 id="resources">Resources</h2>
+<p><em>resource</em> is regarded as something that is <em>provided upon a request</em>. For example, sensors and algorithms are resources for acquiring and manipulating data respectively. Output systems such as speakers or manipulators are resources for interacting with the environment and information about physical objects in the surrounding environmentis viewed as a resource. TeMoto helps to organize the resources which eventually helps to utilize them with minimal effort.</p>
+
+<p><br /></p>
+
+<h2 id="actions">Actions</h2>
+
+<p>The core functionality of TeMoto is to ground instructions in Natural Language (NL) to executable actions, i.e.,modular pieces of code that allow:</p>
+<ul>
+  <li>integrating any available hardware and software resources, e.g., sensors, manipulators, object recognition algorithms;</li>
+  <li>executing any user specific code with no restrictions to the use of third-party software libraries.</li>
+</ul>
+
+<p>Fig. 3 illustrates the process of grounding NL instructions into actions. The the NL utterance is parsed, e.g., “track the hand and show it on the screen” (Fig. 3a), and every recognized instruction is mapped to an action, thus forming an action tree. The action tree is then executed, starting from the root node of the tree (Fig. 3b). Note that the tree could also contain parallel branches. The actions access system resources through the manager interfaces (Fig. 3c).</p>
+
+<p align="center">
+  <img width="370" src="doc/images/temoto_nl_grounding.png" />
+  <br />
+  <b> Fig. 3: </b> Overview of NL grounding in TeMoto via actions. 
+</p>
+
+<p><br /></p>
+
+<h2 id="managers">Managers</h2>
+
+<p>Managers are a set of subsystems in TeMoto that manage the resources. Since the definition for a resource is quite broad (deliberately), resources can be combined to form new resources. For example a resource, such as information about todays weather, can be acquired by combining subresources like humidity and temperature sensors and weather recognition algorithms. Each manager manages a specific domain of resources, including maintaining knowledge about resource:</p>
+<ul>
+  <li>availability</li>
+  <li>status</li>
+  <li>users/clients</li>
+</ul>
+
+<p>Fig. 2 illustrates the main common function of the managers through an example of providing information about hand pose to an action.</p>
+
+<p align="center">
+  <img width="340" src="doc/images/temoto_resource_dep.png" />
+  <br />
+  <b> Fig. 2: </b> Illustration of the main funtionality of the managers. 
+</p>
+
+<p>When the action requires the position of operator’s right hand (Fig. 2a), it does not know that the resource (hand position) may have actually been acquired by combining two sub-resources (Fig. 2b) – a camera and an algorithm that extracts information about hands from the camera feed. If any of the sub-resources fail, the action (and all mediating subsystems) must be notified about the event (resource status update) to make appropriate rearrangements.
+Whereas Fig. 2 illustrates only one specific example, in general all of the following could be true about a resource:</p>
+<ul>
+  <li>The same resource could have been requested by different actions.</li>
+  <li>The same action could request different resources.</li>
+  <li>A resource could hierarchically depend on multiple layers of sub-resources.</li>
+</ul>
+
+<p>Hence the managers are there to organize, provide and keep an eye on resources.</p>
+
+<p><br /></p>
+
+<h2 id="all-together---the-architecture">All together - The Architecture</h2>
+
+<p>Now with the previous 3 concepts in mind, the architecture of TeMoto (Fig. 3) can be viewed as a structure of three hierarchical abstract layers and subsystems within:</p>
+
+<!-- SUPERVISORY LAYER -->
+<details>
+  <summary style="font-weight:bold"> 
+    Supervisory Layer  
+    <a href="/temoto-telerobotics.githubub.io/site/layers/supervisory_layer" style="float: right;">detailed overview</a> 
+  </summary>
+
+  <blockquote>
+    <p>
+      The the top level layer that handles the interaction with the human operator and directs the rest of the system.
+    </p>
+
+    <b>Subsystems in this layer:</b>
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/agent">Agent</a></summary>
+      <blockquote>
+        The Agent is the core subsystem of TeMoto 2.0, acting as an interface for the operator. It grounds the instructions 
+        in Natural Language (NL) into machine executable format which is subsequently executed.  
+      </blockquote>
+    </details>
+
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/health_monitor">Health Monitor</a></summary>
+      <blockquote>
+        The Health Monitor is a subsystem that gathers information about the use of resources and the state of other subsystems.  
+      </blockquote>
+    </details>
+    
+  </blockquote>
+  <br />
+</details>
+
+<!-- MANAGEMENT LAYER -->
+<details>
+  <summary style="font-weight:bold"> 
+    Management Layer  
+    <a href="/temoto-telerobotics.githubub.io/site/layers/management_layer" style="float: right;">detailed overview</a> 
+  </summary>
+
+  <blockquote>
+    <p>
+      This layer is responsible for acquiring and managing resources via respective manager subsystems.
+    </p>
+
+    <b>Subsystems in this layer:</b>
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/context_manager">Context Manager</a></summary>
+      <blockquote>
+        The Context Manager is responsible of perceiving the environment through a combination of sensors and data processing algorithms.
+      </blockquote>
+    </details>
+
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/robot_manager">Robot Manager</a></summary>
+      <blockquote>
+        The Robot Manager maintains knowledge about robotic devices including manipulators, grippers, and mobile bases. 
+        A single device or an assembly (physical or virtual) of the aforementioned devices compose a robot which is viewed as a resource. 
+      </blockquote>
+    </details>
+
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/sensor_manager">Sensor Manager</a></summary>
+      <blockquote>
+        The Sensor Manager maintains knowledge (sensor descriptions) about different types of sensors and directs the data flow of a requested device.  
+      </blockquote>
+    </details>
+
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/algorithm_manager">Algorithm Manager</a></summary>
+      <blockquote>
+        The Algorithm Manager maintains knowledge (algorithm descriptions) about different types of algorithms and directs the data flow of a requested algorithm.  
+      </blockquote>
+    </details>
+
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/output_manager">Output Manager</a></summary>
+      <blockquote>
+        The Output Manager provides the functionality to output audio-visual data. Similarly to the Sensor Manager, 
+        the Output Manager maintains descriptions about different types of output methods and how to access them.  
+      </blockquote>
+    </details>
+
+  </blockquote>
+  <br />
+</details>
+
+<!-- RESOURCE ACCESS LAYER -->
+<details>
+  <summary style="font-weight:bold"> 
+    Resource Access Layer  
+    <a href="/temoto-telerobotics.githubub.io/site/layers/resource_access_layer" style="float: right;">detailed overview</a> 
+  </summary>
+
+  <blockquote>
+    <p>
+      This layer allows the management layer to access resources that are external to TeMoto, e.g., sensors, actuators.
+    </p>    
+
+    <b>Subsystems in this layer:</b>
+    <details>
+      <summary><a href="/temoto-telerobotics.githubub.io/site/managers/external_resource_manager">External Resource Manager</a></summary>
+      <blockquote>
+        The role of the Resource Manager is to initiate external resources, via ROS nodes and launch files, upon a request. 
+        The Resource Manager is primarily used by the Management layer for initiating sensors, data processing algorithms, 
+        robotic devices, and other resources that are not built in TeMoto 2.0. Resource Manager periodically monitors the 
+        status of initialized resources and notifies the upper layers about unexpected events.  
+      </blockquote>
+    </details>    
+
+  </blockquote>
+</details>
+
+<p><br /></p>
+
+<p align="center">
+  <img width="400" src="doc/images/temoto_architecture.png" />
+  <br />
+  <b> Fig. 3: </b> Architecture of TeMoto. 
+</p>
+
+<p>The term abstraction layer emphasizes the idea that a client of a given resource is oblivious to its origins.</p>
+
+<p><br /></p>
+
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>

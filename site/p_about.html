@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+         			
+				        <a href="/temoto-telerobotics.githubub.io/site/p_about.html#what-is-it">&nbsp;&nbsp;&#8226; What is it?</a>
+			          <br>
+		          
+				        <a href="/temoto-telerobotics.githubub.io/site/p_about.html#why-would-i-need-it">&nbsp;&nbsp;&#8226; Why would I need it?</a>
+			          <br>
+		          
+				        <a href="/temoto-telerobotics.githubub.io/site/p_about.html#temoto-applicatons-vs-traditional-ros-applications">&nbsp;&nbsp;&#8226; TeMoto applicatons vs traditional ROS applications</a>
+			          <br>
+		          
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+
+<h1 id="about-temoto">About TeMoto</h1>
+<hr />
+
+<p><br /></p>
+
+<h2 id="what-is-it">What is it?</h2>
+<p>TeMoto is a telerobotics application development framework that is built upon ROS. TeMoto helps to integrate and manage different user-defined sequences of code (<em>actions</em>) and hardware <em>resources</em> like actuators, robots and sensors. For more detailed overview, see the <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview">Conceptual Overview</a> section.</p>
+
+<h2 id="why-would-i-need-it">Why would I need it?</h2>
+<p>A teleoperation process may comprise many different subtasks. Ultimatlely the application developer solves the tasks by introducing one or a bunch of computer programs. The architecture of the composed software depends on the requirements of the problem at hand, ranging from simple to sophisticated in terms of:</p>
+<ul>
+  <li><strong>Reusability</strong> - Should/Can the developed software be reused for other applications?</li>
+  <li><strong>Extendability</strong> - How easy it is to add new features to the software?</li>
+  <li><strong>Scalability</strong> - Can the software be extended to multiple robots that work towards the same goal?</li>
+  <li><strong>Redundancy</strong> - How easy it is to interchange similar components in the system?</li>
+</ul>
+
+<p>TeMoto is a framework that helps to create and manage applications that tend to be sophisticated in the above mentioned terms. So if you are developing a telerobotics application and the code starts to look like a bowl of sphagetti, then you may consider using TeMoto.</p>
+
+<h2 id="temoto-applicatons-vs-traditional-ros-applications">TeMoto applicatons vs traditional ROS applications</h2>
+
+<p>Applications developed in ROS are traditionally managed solely by the user. An application in ROS can be a simple executable/node or a complex combination of different nodes that work together (Fig. 1). Typically the latter is the case and in order to start the application, the user would need to either run each node manually (rosrun) or use launch files (roslaunch). After doing so, the node graph (configuration of running nodes) essentially remains static.</p>
+
+<p align="center">
+  <img width="500" src="doc/images/ros.png" />
+  <br /> 
+  <b> Fig. 1: </b> Conceptual layout of a "traditional" ROS application 
+</p>
+
+<p>TeMoto’s framework introduces a way to organize user-code into chunks called <em>actions</em> (see Fig. 2). An <em>action</em> can run arbitrary user-written code and can also request/control <em>resources</em> (including nodes) via <em>managers</em> (Explained further in the <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview">conceptual overview</a> section). The <em>actions</em> are invoked dynamically via natural language and hence the <em>resources</em> are started or stopped dynamically during run-time. Essentially TeMoto allows the user to programatically manage nodes during run-time. That’s just one feature of the TeMoto’s framework but in principle, this is how “traditional” and TeMoto applications differ.</p>
+
+<p align="center">
+  <img width="500" src="doc/images/temoto.png" />
+  <br />
+  <b> Fig. 2: </b> Conceptual layout of an application in TeMoto. 
+</p>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>

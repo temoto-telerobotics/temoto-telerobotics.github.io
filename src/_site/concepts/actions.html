@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+
+<h1 id="actions">Actions</h1>
+<hr />
+
+<p><a href="#semantic_frames">Semantic Frames</a><br />
+<a href="#action_Source">Action Source</a><br />
+<a href="#action_packages">Action Packages</a></p>
+
+<p><br /></p>
+<h2 id="semantic-frames">Semantic Frames</h2>
+
+<p>A Semantic Frame (SF) is a compact semantic representation of an event or situation which in the implementation of TeMoto contains the following information (Fig. 1):</p>
+<ul>
+  <li><strong><em>action</em></strong> - type of the situation</li>
+  <li><strong><em>lexical unit</em></strong> - verbs that invoke the SF</li>
+  <li><strong><em>object</em></strong> - element that describes the situation</li>
+  <li><strong><em>object data</em></strong> - Data attributed to the object</li>
+  <li><strong><em>interface</em></strong> - indicates which objects are expected as input/output to the SF</li>
+</ul>
+
+<p>The SF implementation in TeMoto 2.0 describes the context of a single action, that is invoked by a lexical unit. For example a sentence <em>“start the camera and show it on the screen”</em> can be represented via 2 SFs shown in Fig. 1. The structure of TeMotos SF is designed to maximize code reuse (via inclusion of interfaces) and make the inter-SF data exchange as simple as possible. Thus the TeMoto SFs might make a linguistically savvy person cringe due to inclusion of non-linguistical terminology.</p>
+
+<p align="center">
+  <img width="500" src="/temoto-telerobotics.githubub.io/site/doc/images/agent/semantic_frame_example.png" />
+  <br />
+  <b> Fig. 1: </b> Example of a sentence represented via 2 semantic frames. 
+</p>
+
+<h3 id="objects">Objects</h3>
+<p>In TeMoto, the term “object” broadly represets parts of a sentence that the subject (mostly TeMoto itself) acts upon. For example sencetce <em>“Put the box on the table”</em> contains 2 objects: <em>“the box”</em> and <em>“the table”</em>. The objects can be differentiated by the questions they answer to, such as: WHAT: <em>“the box”</em>; WHERE: <em>“the table”</em>. Currently TeMotos SFs only support 3 object types:</p>
+<ul>
+  <li><strong><em>what</em></strong></li>
+  <li><strong><em>where</em></strong></li>
+  <li><strong><em>numeric</em></strong></li>
+</ul>
+
+<h3 id="object-data">Object Data</h3>
+<p>In addition to the word that the object contains, the object can also contain data that is attributed to the given object. For instance in Fig. 1, the second SF, which expects a noun <em>“camera”</em>, is also expecting information (data) about how to receive the camera feed. The data could be just a ROS topic (a string) to the camera feed, or it could be something more specific, such as a pointer to raw image data. In principle the type of the data can be user defined, but TeMoto has few commonly used and hence predefined datatypes:</p>
+<ul>
+  <li><strong><em>string</em></strong> (std::string)</li>
+  <li><strong><em>number</em></strong> (double)</li>
+  <li><strong><em>topic</em></strong>  (std::string)</li>
+  <li><strong><em>udef</em></strong>   (user defined)</li>
+</ul>
+
+<h3 id="interfaces">Interfaces</h3>
+<p>Interface is a collection of objects that are expected as an input to the SF, and objects that can be expected as an output. In Fig. 1, the interface of the first SF contains both, input and an output. The second SF in Fig. 1 contains only an input, since that action does not output any information to other potentially proceeding SFs (e.g., the instruction in Fig. 1 could be followed by <em>“… and dim the screen.”</em>). An interface can be either:</p>
+<ul>
+  <li><strong><em>synchronous</em></strong> - when the action finishes, it will be automatically stopped (removed from memory)</li>
+  <li><strong><em>asynchronous</em></strong> - when the action finishes, it will stay in the memory and can serve callback functions (if it has any). An action which was invoked via asynchronous interface has to be stopped manually via <em>“stop”</em> instruction.</li>
+</ul>
+
+<p>An SF could contain multiple interfaces where each has its own input/output section (Fig. 2). In this case, the SF can be invoked via a specific interface. So Fig. 2a represents an action that can deal with multiple object types, that is, it can place apples to bowls; boxes to hardcoded destinations; etc. Fig. 2b shows the interfaces of the Fig. 2a segregated into separate SFs.</p>
+
+<p>It is solely up to the user of TeMoto if he/she wants to create multiple actions with the same lexical unit (Fig. 2b) or create multiple interfaces for the same action (Fig. 2a). Both approaches are functionally equivalent.</p>
+
+<p align="center">
+  <img width="500" src="/temoto-telerobotics.githubub.io/site/doc/images/agent/semantic_frame_example_2.png" />
+  <br />
+  <b> Fig. 2: </b>  a) Example of a SF that contains multiple interfaces; b) Interfaces of the same SF segregated into separate SFs. Both approaches are functionally equivalent.
+</p>
+
+<p><br /></p>
+<h2 id="action-source">Action Source</h2>
+
+<p>Action Source (AcS) is the implementation of a SF. In broader picture, SFs are used by TeMoto’s <a href="/temoto-telerobotics.githubub.io/site/managers/agent">Agent</a> for mapping input natural language sentences to executable AcSs. An AcS can contain arbitrary user libraries and code, given that the structure of the AcS follows the <a href="#todo">predefined format</a>. Specifically, AcS is as a c++ Class which:</p>
+<ul>
+  <li>implements the SF structure,</li>
+  <li>embeds the user written code,</li>
+  <li>inherits bunch of methods and parameters from a base AcS Class that are required by Temoto,</li>
+  <li>is converted to a dynamically loadable plugin.</li>
+</ul>
+
+<p>Hence the AcS is nothing more than a c++ class which has a structure that corresponds to its SF. A base structure for an AcS can be easily generated with TeMoto’s <a href="#todo">Semantic Frame Assistant</a> but it’s up to the user/developer to fill the blank AcS with appropriate code.</p>
+
+<p>The AcSs are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that AcSs can be added or removed from a running instance of TeMoto.</p>
+
+<p><br /></p>
+<h2 id="action-packages">Action Packages</h2>
+
+<p>A TeMoto action is structured as a ROS Package (<a href="https://github.com/UTNuclearRoboticsPublic/temoto-telerobotics.githubub.io/tree/master/tasks/ai_show_env">example</a>):</p>
+
+<ul>
+  <li>CMakeLists.txt</li>
+  <li>package.xml</li>
+  <li>semantic_frame.xml</li>
+  <li><strong>src</strong>/action_source.cpp</li>
+  <li><strong>lib</strong>/lib_action_source.so</li>
+</ul>
+
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>

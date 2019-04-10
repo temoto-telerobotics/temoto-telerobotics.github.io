@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
+
+    <link rel="stylesheet" href="/temoto-telerobotics.githubub.io/site/assets/css/style.css?v=4b6e00c45ab128c0de63b36165409cb0efcf6757">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>temoto-telerobotics.github.io</h1>
+        <p>Documentation website for TeMoto</p>
+		    
+        <!-- Insert all pages to the nav bar -->
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/"> <b>Home</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_about.html"> <b>About TeMoto</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_conceptual_overview.html"> <b>Conceptual Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_detailed_overview.html"> <b>Detailed Overview</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html"> <b>Installation Guide</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+         			
+				        <a href="/temoto-telerobotics.githubub.io/site/p_installation_guide.html#ubuntu-1604">&nbsp;&nbsp;&#8226; Ubuntu 16.04</a>
+			          <br>
+		          
+            
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/p_tutorials.html"> <b>Tutorials</b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+		    
+          
+        	  <a href="/temoto-telerobotics.githubub.io/site/assets/css/style.css"> <b></b></a>
+			      <br>
+            
+            <!-- Insert all H2 headings to the nav bar -->
+            
+          
+		    
+
+		    
+          <p class="view"><a href="http://github.com/temoto-telerobotics/temoto-telerobotics.github.io">View the Project on GitHub <small></small></a></p>
+		    
+        
+
+        
+
+        
+      </header>
+      <section>
+
+      <p><br /><br /></p>
+<h1 id="temoto-installation-guide">TeMoto installation guide</h1>
+<hr />
+<p><br /></p>
+
+<h2 id="ubuntu-1604">Ubuntu 16.04</h2>
+<p><strong>1. Go to your catkin workspace source directory</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd &lt;catkin_ws&gt;/src/
+</code></pre></div></div>
+
+<p><strong>2. Create a subfolder for maintaining TeMoto things</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir temoto &amp;&amp; cd temoto
+</code></pre></div></div>
+
+<p><strong>3. Clone temoto</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/temoto-telerobotics/temoto
+</code></pre></div></div>
+
+<p><strong>4. Run the TeMoto setup script &amp; follow the instructions</strong><br />
+The tailing ‘temoto’ parameter indicates the installation directory</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash temoto/scripts/temoto_setup.sh temoto
+</code></pre></div></div>
+
+<p><strong>5. Install MeTA natural language processor</strong><br />
+This script will</p>
+<ul>
+  <li>install MeTA related dependancies (asks your password)</li>
+  <li>clone, build and test MeTA</li>
+  <li>download the language model files</li>
+</ul>
+
+<p>PS: The whole process may take up to few minutes.</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd temoto_nlp
+bash scripts/install_meta.sh
+</code></pre></div></div>
+
+<p><strong>6. compile your catkin workspace</strong></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd &lt;catkin_ws&gt; &amp;&amp; catkin_make
+</code></pre></div></div>
+
+
+      </section>
+      <footer>
+        
+        <p>This project is maintained by <a href="http://github.com/temoto-telerobotics">temoto-telerobotics</a></p>
+		
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="/temoto-telerobotics.githubub.io/site/assets/js/scale.fix.js"></script>
+
+
+  
+  </body>
+</html>
