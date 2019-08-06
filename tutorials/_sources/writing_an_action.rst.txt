@@ -1,131 +1,138 @@
 Writing an Action
 =================
 
-.. note:: This tutorial assumes that you are familiar with the concept of `Actions and Semantic Frames <../../../temoto-telerobotics.github.io/site/concepts/actions>`_ in TeMoto.
+.. note:: This tutorial assumes that you are familiar with the concept of `Actions and UMRFs <../../../temoto-telerobotics.github.io/site/concepts/actions>`_ in TeMoto.
 
-The basis for an action can be easily generated via TeMoto Action Assistant. Since the structure of an action is defined by its semantic frame, the TeMoto Action Assistant provides the graphical interface for creating a semantic frame. Once you are happy with the semantic frame, a basis for action implementation package is generated, incuding a c++ source file.
+The basis for an action can be easily generated via TeMoto Action Assistant. Since the structure of an action is defined by its UMRF, the TeMoto Action Assistant provides the graphical interface for creating an UMRF. Once you are happy with the UMRF, a basis for action implementation package is generated, incuding a c++ source file.
 
-For this particular tutorial, we are going to create an action that will be run when temoto_agent receives instruction:
-
-.. raw:: html
-
-    <div style="text-align:center; font-style:italic; font-weight: bold">"put the box on the table"</div><br>
-
+For the sake of example, this tutorial helps to create a TeMoto Action, which accepts two numbers as an input and outputs the sum of the input numbers.
 
 1) Start the TeMoto Action Assistant
 """"""""""""""""""""""""""""""""""""
 
+.. note:: Follow the *"Creating TeMoto workspace*" tutorial if you haven't created a TeMoto workspace yet.
+
 .. code-block:: shell
 
-   roslaunch temoto_action_assistant action_assistant.launch
+   roslaunch YOUR_TEMOTO_WORKSPACE action_assistant.launch
 
 This should bring up the start screen of the action assistant, depicted in Fig. 1. If you have a feeling that the Action Assistant looks awfully similar to MoveIt! Setup Assistant, then you are correct, it's based on it. Click on the *"Create New TeMoto Action Package"* button.
 
-.. figure:: /images/action_assistant/start_screen.bmp
+.. figure:: /images/action_assistant/start_screen_umrf.png
     :width: 400px
     :align: center
 
     **Fig. 1:** Start screen of the TeMoto Action Assistant 
 
-2) Create your semantic frame
+2) Create your UMRF
 """""""""""""""""""""""""""""
 
-Go to the *"Semantic Frame Editor"* tab (depicted in Fig. 2). This tab consists of 3 main sections:
+Go to the *"UMRF Editor"* tab (depicted in Fig. 2). This tab consists of 2 main sections:
 
-    * **Semantic Frame Viewer** section, which visually shows the structure of the SF.
-    * **Item Editor** section, which allows to edit the currently active item in the SF Viewer.
-    * **Add/Remove Items** section, which allows to add or remove the currently active item in the SF viewer.
+    * **UMRF Viewer** section, which visually shows the structure of the UMRF.
+    * **Item Editor** section, which allows to edit the currently active item in the UMRF Viewer.
 
-.. figure:: /images/action_assistant/semantic_frame_editor_expl.bmp
+.. figure:: /images/action_assistant/umrf_editor_expl_umrf.png
     :width: 450px
     :align: center
 
-    **Fig. 2:** Semantic Frame Editor tab 
+    **Fig. 2:** UMRF Editor tab 
 
-* Modify the lexical unit above the SF Viewer. In the given example, the lexical unit is *"put"*.
-* Select the *input* item of the first interface (Interface 0) and create a new subject by clicking the *"Add to Selected"* button.
-* A blank subject is created. Edit this subject via the Subject editor (first highlight the item in the SF Viewer). In the given example the type of the subject is *"what"* and the word is *"box"*.
-* Create the second subject in the same way as the first was created and edit it. In the given example the type of the second subject is *"where"* and the word is *"table"*.
+* Modify the name by clicking on the "Name:" item in the UMRF viewer and changing the name in the item editor. In the given example, let's call it *"add numbers"*.
+* Add new input parameter by right-clicking on the "Input Parameters" item and selecing "Add new parameter".
+* Select the newly created parameter and change it's name to *"input_1"* and it's type to *"number"* (shown in Fig. 3).
+* Add another input parameter and change it's name to *"input_2"* and it's type to *"number"*.
+* Add an output parameter change it's name to *"output_1"* and it's type to *"number"*.
+
+The UMRF is now done (end result shown in Fig. 4).
+
+.. figure:: /images/action_assistant/add_parameter_umrf.png
+    :width: 450px
+    :align: center
+
+    **Fig. 3:** Modify new input parameter
+
+.. figure:: /images/action_assistant/final_umrf.png
+    :width: 450px
+    :align: center
+
+    **Fig. 4:** UMRF done
 
 3) Generate the action package
 """"""""""""""""""""""""""""""
 
-Go to the *"Configuration Files"* tab (depicted in Fig. 3).
+Go to the *"Generate Action"* tab (depicted in Fig. 5).
 
 * Name the action via *"Action Package Name"* field. The names are automatically forced to follow the `ROS package naming convention <http://www.ros.org/reps/rep-0144.html>`_. So don't be surprised if you cannot use capital letters and whitespaces. Additionally, a prefix of *"ta_"* is added, which stands for TeMoto Action.
-* Select the directory where the action package is generated.
+* Since this tutorial assumes that the Action Assistant was opened via TeMoto workspace (see the first step in this tutorial), then the directory where the action will be generated is automatically set. If that's not the case then select the directory where the action package is generated.
 * Generate the package by clicking the *"Generate"* button.
 
-.. figure:: /images/action_assistant/generate_action.bmp
+.. figure:: /images/action_assistant/generate_action_umrf.png
     :width: 450px
     :align: center
 
-    **Fig. 3:** Configuration files tab
+    **Fig. 5:** Generate Action tab
 
 4) Modify the autogenerated source
 """"""""""""""""""""""""""""""""""
 
-Now navigate to the generated package and open the [Action Source](/temoto-telerobotics.github.io/site/concepts/actions) file with your favourite editor. For example:
+Now navigate to the generated package and open the `action's<../../../temoto-telerobotics.github.io/site/concepts/actions>`_ source file with your favourite editor. For example:
 
 .. code-block:: shell
 
-    cd temoto_actions/ta_my_example_action/src
-    gedit ta_my_example_action.cpp
+    cd YOUR_TEMOTO_WORKSPACE/actions/ta_add_numbers/src
+    gedit ta_add_numbers.cpp
 
 
-The [Action Source](/temoto-telerobotics.github.io/site/concepts/actions) file contains a bunch of things that are necessary for TeMoto, but we are going to focus on a ``startInterface_0()`` function. This function corresponds to the interface that is described in the SF.
+The `action<../../../temoto-telerobotics.github.io/site/concepts/actions>`_ source file contains a bunch of things that are necessary for TeMoto, but we are going to focus on a ``executeAction()`` function. This function is invoked when the action is executed.
 
 Locate the block comment which says "YOUR CODE HERE":
 
 .. code-block:: c++
 
-  /*
-   * Interface 0 body
-   */
-  void startInterface_0()
-  {
-    /* EXTRACTION OF INPUT SUBJECTS */
-    TTP::Subject what_0_in = TTP::getSubjectByType("what", input_subjects);
-    std::string  what_0_word_in = what_0_in.words_[0];
+    void executeAction()
+    {
+      // Input parameters
+      double input_2 = GET_PARAMETER("input_2", double);
+      double input_1 = GET_PARAMETER("input_1", double);
 
-    TTP::Subject where_1_in = TTP::getSubjectByType("where", input_subjects);
-    std::string  where_1_word_in = where_1_in.words_[0];
+      // Declaration of output parameters
+      double output_1;
 
-    /* * * * * * * * * * * * * * * 
-     *                           *
-     * ===> YOUR CODE HERE <===  *
-     *                           *
-     * * * * * * * * * * * * * * */
+      /* * * * * * * * * * * * * * 
+      *                          
+      * ===> YOUR CODE HERE <===
+      *                          
+      * * * * * * * * * * * * * */
 
-  }
+      // Pass the output parameters to the action engine
+      SET_PARAMETER("output_1", "double", output_1);
+    }
 
-and replace it with your arbitrary code. In this example, the input subjects *"box"* and *"table"* are printed out through ``TEMOTO_INFO_STREAM`` function, which is same as ``ROS_INFO_STREAM`` but adds a bit of debug information in front of the message.
+and replace it with code that adds up the numbers and puts the result to the output parameter ``output_1``
 
 .. code-block:: c++
 
-    /*
-     * Interface 0 body
-     */
-    void startInterface_0()
+    void executeAction()
     {
-      /* EXTRACTION OF INPUT SUBJECTS */
-      TTP::Subject what_0_in = TTP::getSubjectByType("what", input_subjects);
-      std::string  what_0_word_in = what_0_in.words_[0];
+      // Input parameters
+      double input_2 = GET_PARAMETER("input_2", double);
+      double input_1 = GET_PARAMETER("input_1", double);
 
-      TTP::Subject where_1_in = TTP::getSubjectByType("where", input_subjects);
-      std::string  where_1_word_in = where_1_in.words_[0];
+      // Declaration of output parameters
+      double output_1;
 
-      /*
-       * MY CODE HERE
-       */
-      TEMOTO_INFO_STREAM("I will put the " << what_0_word_in << " on the " << where_1_word_in);
+      // Add the input numbers and put the result into the output variable
+      output_1 = input_1 + input_2;
+
+      // Pass the output parameters to the action engine
+      SET_PARAMETER("output_1", "double", output_1);
     }
 
-5) Compile and test the action
+.. warning:: Do not modify any of the autogenerated code. Otherwise your action will likely not work properly.
+
+5) Build and test the action
 """"""""""""""""""""""""""""""
 
-* Compile the action.
-* Test the action by typing *"put the box on the table"* into the temoto termial. The message is printed out in the terminal where the *"temoto_agent"* was launched:
-
-``[temoto_agent/TaPutBoxExample::startInterface_0] I will put the box on the table``
+* Build the action (catkin build).
 

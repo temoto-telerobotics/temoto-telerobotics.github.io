@@ -4,7 +4,8 @@ TeMoto Tutorials
 .. toctree::
    :maxdepth: 1
 
-   starting_temoto
+   installing_temoto
+   create_temoto_workspace
    writing_an_action
    utilizing_the_managers
 
