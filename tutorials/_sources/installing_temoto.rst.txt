@@ -14,7 +14,7 @@ You can skip this part if you already have ROS and catkin workspace set up.
 
     cd your_catkin_ws_dir/src
     mkdir temoto && cd temoto
-    git clone -b umrf-devel https://github.com/temoto-telerobotics/temoto.git
+    git clone https://github.com/temoto-telerobotics/temoto.git
 
 **3) Install dependencies:**
 
