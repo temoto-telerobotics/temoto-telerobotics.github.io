@@ -7,55 +7,144 @@ layout: default
 
 # Actions
 <hr>
-[Semantic Frames](#semantic_frames)<br>
-[Action Source](#action_Source)<br>
-[Action Packages](#action_packages)
+[**UMRF**](#universal-meaning-representation-fromat)<br>
+[ • UMRF JSON Format](#umrf-json-format)<br>
+[ • Parameter Flattening](#parameter-flattening)<br>
+[ • Parameter Value Format](#parameter-value-format)<br>
+[ • Parameter Source](#parameter-source)<br>
+
+[**TeMoto Actions**](#temoto-actions)<br>
+[ • Design Principles](#design-principles)<br>
 
 <br>
-## Semantic Frames
+## Universal Meaning Representation Fromat
 
-A Semantic Frame (SF) is a compact semantic representation of an event or situation which in the implementation of TeMoto contains the following information (Fig. 1):
-* ***action*** - type of the situation
-* ***lexical unit*** - verbs that invoke the SF
-* ***object*** - element that describes the situation
-* ***object data*** - Data attributed to the object
-* ***interface*** - indicates which objects are expected as input/output to the SF
+Universal Meaning Representation Format (UMRF) outlines natural language structures through input-output parameters and by specifying relations between other UMRF structures. In short, UMRFs comprise graphs that can describe complex concepts and interactions.
 
-The SF implementation in TeMoto 2.0 describes the context of a single action, that is invoked by a lexical unit. For example a sentence *“start the camera and show it on the screen”* can be represented via 2 SFs shown in Fig. 1. The structure of TeMotos SF is designed to maximize code reuse (via inclusion of interfaces) and make the inter-SF data exchange as simple as possible. Thus the TeMoto SFs might make a linguistically savvy person cringe due to inclusion of non-linguistical terminology. 
+The motivation behind UMRF is to define a generic, low-overhead and flexible format for embedding different types of Meaning Representation (MR) structures (such as Alexa Meaning Representation Language or Google's Dialogflow webhook format). Unified format allows to mix and match different cutting edge natural language parsing and action execution tools.
 
-<p align="center" >
-  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/agent/semantic_frame_example.png">
-  <br>
-  <b> Fig. 1: </b> Example of a sentence represented via 2 semantic frames. 
-</p>
+### UMRF JSON Format
 
-### Objects
-In TeMoto, the term "object" broadly represets parts of a sentence that the subject (mostly TeMoto itself) acts upon. For example sencetce *"Put the box on the table"* contains 2 objects: *"the box"* and *"the table"*. The objects can be differentiated by the questions they answer to, such as: WHAT: *"the box"*; WHERE: *"the table"*. Currently TeMotos SFs only support 3 object types:
-* ***what***
-* ***where***
-* ***numeric***
+UMRF is specified in JavaScript Object Notation (JSON), a language-independent data format which facilitates integration with a variety of software platforms. The general outline of the UMRF format is the following:
 
-### Object Data
-In addition to the word that the object contains, the object can also contain data that is attributed to the given object. For instance in Fig. 1, the second SF, which expects a noun *"camera"*, is also expecting information (data) about how to receive the camera feed. The data could be just a ROS topic (a string) to the camera feed, or it could be something more specific, such as a pointer to raw image data. In principle the type of the data can be user defined, but TeMoto has few commonly used and hence predefined datatypes:
-* ***string*** (std::string)
-* ***number*** (double)
-* ***topic***  (std::string)
-* ***udef***   (user defined)
+```json
+{
+  "name": {},
+  "input_paramteters": {},
+  "output_parameters": {},
+  "suffix": {},
+  "effect": {},
+  "parents":[
+    {"name": {}, "suffix": {}}
+  ],
+  "children":[
+    {"name": {}, "suffix": {}}
+  ],
+}
+```
 
-### Interfaces
-Interface is a collection of objects that are expected as an input to the SF, and objects that can be expected as an output. In Fig. 1, the interface of the first SF contains both, input and an output. The second SF in Fig. 1 contains only an input, since that action does not output any information to other potentially proceeding SFs (e.g., the instruction in Fig. 1 could be followed by *"... and dim the screen."*). An interface can be either:
-* ***synchronous*** - when the action finishes, it will be automatically stopped (removed from memory)
-* ***asynchronous*** - when the action finishes, it will stay in the memory and can serve callback functions (if it has any). An action which was invoked via asynchronous interface has to be stopped manually via *"stop"* instruction.
+where common attributes are
+* ***name*** - name of the action
+* ***input_parameters*** - necessary input information for the action
+* ***output_parameters*** - output parameters that the action provides 
 
-An SF could contain multiple interfaces where each has its own input/output section (Fig. 2). In this case, the SF can be invoked via a specific interface. So Fig. 2a represents an action that can deal with multiple object types, that is, it can place apples to bowls; boxes to hardcoded destinations; etc. Fig. 2b shows the interfaces of the Fig. 2a segregated into separate SFs.
+and application/context specific parameters are
+* ***suffix*** - a number which differentiates actions, when multiple instances of the same action are present in the same action graph
+* ***effect*** - indicates whether or not the action is supposed to function even after its main execution routine is finished
+* ***parents*** - when the action is part of a UMRF graph, then this field indicates the preceding actions
+* ***children*** - when the action is part of a UMRF graph, then this field indicates the proceeding actions
 
-It is solely up to the user of TeMoto if he/she wants to create multiple actions with the same lexical unit (Fig. 2b) or create multiple interfaces for the same action (Fig. 2a). Both approaches are functionally equivalent.
 
-<p align="center" >
-  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/agent/semantic_frame_example_2.png">
-  <br>
-  <b> Fig. 2: </b>  a) Example of a SF that contains multiple interfaces; b) Interfaces of the same SF segregated into separate SFs. Both approaches are functionally equivalent.
-</p>
+### Parameter Flattening
+
+Parameter flattening is conversion of nested structures to a key-value list where the key embodies the nested structure of a specific parameter. Each nest level is denoted by nesting namespace "::". For example: 
+
+Unflattened
+```json
+"input_paramteters": {
+  "params_0":{
+    "param_0": "value",
+    "param_1": "value",
+  },
+  "params_1":{
+    "sub_params_0":{
+      "param_0": "value",
+      "param_1": "value",
+    },
+    "param_1": "value",
+  },
+  "param_0": "value"
+}
+```
+
+Flattened
+```json
+"input_paramteters": {
+  "params_0::param_0": "value",
+  "params_0::param_1": "value",
+  "params_1::sub_params_0::param_0": "value",
+  "params_1::sub_params_0::param_1": "value",
+  "params_1::param_1": "value",
+  "param_0": "value"
+}
+```
+
+### Parameter Value Format
+
+JSON format defines [3 main data types](https://www.w3schools.com/js/js_json_datatypes.asp): a string, a number and a boolean. While it's good enough for most of applications that use JSON, Actions can do a lot more if the parameters can represent any format of data. It might be over-engineering but languages like C++ are not superficially ambiguous with data like python, and need more info for reliable runtime data conversion and parsing. Hence the Parameter Value Format:
+
+```json
+{
+  "type":"", 
+  "specification":"",
+  "value":"",
+  "source_id":"",
+  "timestamp":"",
+  "required":"true/false",
+  "updatable":"true/false",
+  "guaranteed":"true/false"
+}
+```
+
+where
+
+* ***type*** (required) is a string that indicates the data type.
+* ***value*** (optional) is the value of the data. Value field can be set as a requirement, e.g., action expects a numerical value of "5".
+* ***source_id*** (optional) identifies the origin of the parameter.
+* ***required*** (optional, default=true) describes if this parameter is required for the action to execute
+* ***updatable*** (optional, default=false)  describes if this parameter may be updated externally during the execution of the action
+* ***guaranteed*** (optional, default=false) if this parameter is used as an output value, then "guaranteed" indicates whether the parameter is set when the action finishes execution
+
+### Parameter Source
+
+Parameter source is an additional identifier in the input parameter section, which indicates what kind of parameters must be retrieved from a same parameter source.
+
+**Context**: Parameters can be clustered together e.g. a coordinate which is denoted by x, y, z, or parameters can be independent e.g. 2 unrelated parameters such as length of the room and number of people in it. In principle the nuber of parents of an action is not limited, all actions care about is have all required input parameters been retrieved or not. But not caring about where the parameters come from creates a problem: how to make sure that a dependent parameter cluster (such as a coordinate) comes from a single source? It would not make sense if coordinate::x is retreived from one source and coodinate::y from completely different and unrelated source. For that Parameter Sources could come handy
+
+For example:
+
+```json
+"input_paramteters": {
+  "params_0":{
+    "single_source": "true", // All following params must have same source_id
+    "param_0": "value",
+    "param_1": "value",
+  },
+  "params_1":{
+    "sub_params_0":{
+      "param_0": "value",
+      "param_1": "value",
+    },
+    "param_1": "value",
+  },
+  "param_0": "value"
+}
+```
+
+### Example
+
+[Amazon AMRL embedded in UMRF](https://share.nuclino.com/p/Example-AMRL-in-UMRF-HT2uUKM2LnAjMAKqbY3rH1)
+
 
 <br>
 ## Action Source
@@ -71,14 +160,32 @@ Hence the AcS is nothing more than a c++ class which has a structure that corres
 The AcSs are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that AcSs can be added or removed from a running instance of TeMoto.
 
 <br>
-## Action Packages
 
-A TeMoto action is structured as a ROS Package ([example](https://github.com/UTNuclearRoboticsPublic/temoto-telerobotics.github.io/tree/master/tasks/ai_show_env)):
+## TeMoto Actions
 
-* CMakeLists.txt
-* package.xml
-* semantic_frame.xml
-* **src**/action_source.cpp
-* **lib**/lib_action_source.so
+In a nutshell TeMoto Action is an executable which accepts and outputs parameters as defined by its UMRF. In technical terms, action is a plugin that is described by UMRF. The UMRF file helps the Action Engine to choose the appropriate action. 
 
+An action can contain arbitrary user libraries and code. Specifically, action is as a c++ Class which:
+* implements the UMRF structure,
+* embeds the user written code,
+* inherits bunch of methods and parameters from a base action Class that are required by TeMoto,
+* is converted to a dynamically loadable plugin.
+
+Hence an action is nothing more than a c++ class which has a structure that corresponds to its UMRF. A base structure for an action can be easily generated with TeMoto's [Action Assistant](https://temoto-telerobotics.github.io/tutorials/writing_an_action.html) but it's up to the user/developer to fill the blank AcS with appropriate code.
+
+Actions are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that actions can be added or removed from a running instance of TeMoto.
+
+### Design Principles
+
+TeMoto actions follow the according design principles (Fig. 1):
+* The number of parents (indexed by k) and children (indexed by l) of an action "A" is not limited. 
+* The number of input parameters (indexed by n) and output parameters (indexed by m) of an action "A" is not limited.
+* Action "A" is executable only when all required input parameters are received (see [Parameter Value Format](#parameter-value-format)).
+* All actions have an unique name (identifier).
+
+<p align="center" >
+  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/multiple_parent_umrf_action.png">
+  <br>
+  <b> Fig. 1: </b>  TeMoto Action design principles
+</p>
 

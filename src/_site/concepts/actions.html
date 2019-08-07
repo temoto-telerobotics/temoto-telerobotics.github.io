@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
 
-    <link rel="stylesheet" href="/temoto-telerobotics.github.io/site/assets/css/style.css?v=5621ca50b53b964cc936bdf1dab1381458318528">
+    <link rel="stylesheet" href="/temoto-telerobotics.github.io/site/assets/css/style.css?v=c27ab80d023a0aa85641973250692628285e3e2f">
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -118,63 +118,143 @@
 <h1 id="actions">Actions</h1>
 <hr />
 
-<p><a href="#semantic_frames">Semantic Frames</a><br />
-<a href="#action_Source">Action Source</a><br />
-<a href="#action_packages">Action Packages</a></p>
+<p><a href="#universal-meaning-representation-fromat"><strong>UMRF</strong></a><br />
+<a href="#umrf-json-format"> • UMRF JSON Format</a><br />
+<a href="#parameter-flattening"> • Parameter Flattening</a><br />
+<a href="#parameter-value-format"> • Parameter Value Format</a><br />
+<a href="#parameter-source"> • Parameter Source</a><br /></p>
+
+<p><a href="#temoto-actions"><strong>TeMoto Actions</strong></a><br />
+<a href="#design-principles"> • Design Principles</a><br /></p>
 
 <p><br /></p>
-<h2 id="semantic-frames">Semantic Frames</h2>
+<h2 id="universal-meaning-representation-fromat">Universal Meaning Representation Fromat</h2>
 
-<p>A Semantic Frame (SF) is a compact semantic representation of an event or situation which in the implementation of TeMoto contains the following information (Fig. 1):</p>
+<p>Universal Meaning Representation Format (UMRF) outlines natural language structures through input-output parameters and by specifying relations between other UMRF structures. In short, UMRFs comprise graphs that can describe complex concepts and interactions.</p>
+
+<p>The motivation behind UMRF is to define a generic, low-overhead and flexible format for embedding different types of Meaning Representation (MR) structures (such as Alexa Meaning Representation Language or Google’s Dialogflow webhook format). Unified format allows to mix and match different cutting edge natural language parsing and action execution tools.</p>
+
+<h3 id="umrf-json-format">UMRF JSON Format</h3>
+
+<p>UMRF is specified in JavaScript Object Notation (JSON), a language-independent data format which facilitates integration with a variety of software platforms. The general outline of the UMRF format is the following:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"input_paramteters"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"output_parameters"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"suffix"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"effect"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w">
+  </span><span class="s2">"parents"</span><span class="p">:[</span><span class="w">
+    </span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">"suffix"</span><span class="p">:</span><span class="w"> </span><span class="p">{}}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"children"</span><span class="p">:[</span><span class="w">
+    </span><span class="p">{</span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="s2">"suffix"</span><span class="p">:</span><span class="w"> </span><span class="p">{}}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>where common attributes are</p>
 <ul>
-  <li><strong><em>action</em></strong> - type of the situation</li>
-  <li><strong><em>lexical unit</em></strong> - verbs that invoke the SF</li>
-  <li><strong><em>object</em></strong> - element that describes the situation</li>
-  <li><strong><em>object data</em></strong> - Data attributed to the object</li>
-  <li><strong><em>interface</em></strong> - indicates which objects are expected as input/output to the SF</li>
+  <li><strong><em>name</em></strong> - name of the action</li>
+  <li><strong><em>input_parameters</em></strong> - necessary input information for the action</li>
+  <li><strong><em>output_parameters</em></strong> - output parameters that the action provides</li>
 </ul>
 
-<p>The SF implementation in TeMoto 2.0 describes the context of a single action, that is invoked by a lexical unit. For example a sentence <em>“start the camera and show it on the screen”</em> can be represented via 2 SFs shown in Fig. 1. The structure of TeMotos SF is designed to maximize code reuse (via inclusion of interfaces) and make the inter-SF data exchange as simple as possible. Thus the TeMoto SFs might make a linguistically savvy person cringe due to inclusion of non-linguistical terminology.</p>
-
-<p align="center">
-  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/agent/semantic_frame_example.png" />
-  <br />
-  <b> Fig. 1: </b> Example of a sentence represented via 2 semantic frames. 
-</p>
-
-<h3 id="objects">Objects</h3>
-<p>In TeMoto, the term “object” broadly represets parts of a sentence that the subject (mostly TeMoto itself) acts upon. For example sencetce <em>“Put the box on the table”</em> contains 2 objects: <em>“the box”</em> and <em>“the table”</em>. The objects can be differentiated by the questions they answer to, such as: WHAT: <em>“the box”</em>; WHERE: <em>“the table”</em>. Currently TeMotos SFs only support 3 object types:</p>
+<p>and application/context specific parameters are</p>
 <ul>
-  <li><strong><em>what</em></strong></li>
-  <li><strong><em>where</em></strong></li>
-  <li><strong><em>numeric</em></strong></li>
+  <li><strong><em>suffix</em></strong> - a number which differentiates actions, when multiple instances of the same action are present in the same action graph</li>
+  <li><strong><em>effect</em></strong> - indicates whether or not the action is supposed to function even after its main execution routine is finished</li>
+  <li><strong><em>parents</em></strong> - when the action is part of a UMRF graph, then this field indicates the preceding actions</li>
+  <li><strong><em>children</em></strong> - when the action is part of a UMRF graph, then this field indicates the proceeding actions</li>
 </ul>
 
-<h3 id="object-data">Object Data</h3>
-<p>In addition to the word that the object contains, the object can also contain data that is attributed to the given object. For instance in Fig. 1, the second SF, which expects a noun <em>“camera”</em>, is also expecting information (data) about how to receive the camera feed. The data could be just a ROS topic (a string) to the camera feed, or it could be something more specific, such as a pointer to raw image data. In principle the type of the data can be user defined, but TeMoto has few commonly used and hence predefined datatypes:</p>
+<h3 id="parameter-flattening">Parameter Flattening</h3>
+
+<p>Parameter flattening is conversion of nested structures to a key-value list where the key embodies the nested structure of a specific parameter. Each nest level is denoted by nesting namespace “::”. For example:</p>
+
+<p>Unflattened</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"input_paramteters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"params_0"</span><span class="p">:{</span><span class="w">
+    </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"params_1"</span><span class="p">:{</span><span class="w">
+    </span><span class="s2">"sub_params_0"</span><span class="p">:{</span><span class="w">
+      </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Flattened</p>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"input_paramteters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"params_0::param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"params_0::param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"params_1::sub_params_0::param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"params_1::sub_params_0::param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"params_1::param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="parameter-value-format">Parameter Value Format</h3>
+
+<p>JSON format defines <a href="https://www.w3schools.com/js/js_json_datatypes.asp">3 main data types</a>: a string, a number and a boolean. While it’s good enough for most of applications that use JSON, Actions can do a lot more if the parameters can represent any format of data. It might be over-engineering but languages like C++ are not superficially ambiguous with data like python, and need more info for reliable runtime data conversion and parsing. Hence the Parameter Value Format:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"type"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"specification"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"value"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"source_id"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"timestamp"</span><span class="p">:</span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"required"</span><span class="p">:</span><span class="s2">"true/false"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"updatable"</span><span class="p">:</span><span class="s2">"true/false"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"guaranteed"</span><span class="p">:</span><span class="s2">"true/false"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<p>where</p>
+
 <ul>
-  <li><strong><em>string</em></strong> (std::string)</li>
-  <li><strong><em>number</em></strong> (double)</li>
-  <li><strong><em>topic</em></strong>  (std::string)</li>
-  <li><strong><em>udef</em></strong>   (user defined)</li>
+  <li><strong><em>type</em></strong> (required) is a string that indicates the data type.</li>
+  <li><strong><em>value</em></strong> (optional) is the value of the data. Value field can be set as a requirement, e.g., action expects a numerical value of “5”.</li>
+  <li><strong><em>source_id</em></strong> (optional) identifies the origin of the parameter.</li>
+  <li><strong><em>required</em></strong> (optional, default=true) describes if this parameter is required for the action to execute</li>
+  <li><strong><em>updatable</em></strong> (optional, default=false)  describes if this parameter may be updated externally during the execution of the action</li>
+  <li><strong><em>guaranteed</em></strong> (optional, default=false) if this parameter is used as an output value, then “guaranteed” indicates whether the parameter is set when the action finishes execution</li>
 </ul>
 
-<h3 id="interfaces">Interfaces</h3>
-<p>Interface is a collection of objects that are expected as an input to the SF, and objects that can be expected as an output. In Fig. 1, the interface of the first SF contains both, input and an output. The second SF in Fig. 1 contains only an input, since that action does not output any information to other potentially proceeding SFs (e.g., the instruction in Fig. 1 could be followed by <em>“… and dim the screen.”</em>). An interface can be either:</p>
-<ul>
-  <li><strong><em>synchronous</em></strong> - when the action finishes, it will be automatically stopped (removed from memory)</li>
-  <li><strong><em>asynchronous</em></strong> - when the action finishes, it will stay in the memory and can serve callback functions (if it has any). An action which was invoked via asynchronous interface has to be stopped manually via <em>“stop”</em> instruction.</li>
-</ul>
+<h3 id="parameter-source">Parameter Source</h3>
 
-<p>An SF could contain multiple interfaces where each has its own input/output section (Fig. 2). In this case, the SF can be invoked via a specific interface. So Fig. 2a represents an action that can deal with multiple object types, that is, it can place apples to bowls; boxes to hardcoded destinations; etc. Fig. 2b shows the interfaces of the Fig. 2a segregated into separate SFs.</p>
+<p>Parameter source is an additional identifier in the input parameter section, which indicates what kind of parameters must be retrieved from a same parameter source.</p>
 
-<p>It is solely up to the user of TeMoto if he/she wants to create multiple actions with the same lexical unit (Fig. 2b) or create multiple interfaces for the same action (Fig. 2a). Both approaches are functionally equivalent.</p>
+<p><strong>Context</strong>: Parameters can be clustered together e.g. a coordinate which is denoted by x, y, z, or parameters can be independent e.g. 2 unrelated parameters such as length of the room and number of people in it. In principle the nuber of parents of an action is not limited, all actions care about is have all required input parameters been retrieved or not. But not caring about where the parameters come from creates a problem: how to make sure that a dependent parameter cluster (such as a coordinate) comes from a single source? It would not make sense if coordinate::x is retreived from one source and coodinate::y from completely different and unrelated source. For that Parameter Sources could come handy</p>
 
-<p align="center">
-  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/agent/semantic_frame_example_2.png" />
-  <br />
-  <b> Fig. 2: </b>  a) Example of a SF that contains multiple interfaces; b) Interfaces of the same SF segregated into separate SFs. Both approaches are functionally equivalent.
-</p>
+<p>For example:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"input_paramteters"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="s2">"params_0"</span><span class="p">:{</span><span class="w">
+    </span><span class="s2">"single_source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"true"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">All</span><span class="w"> </span><span class="err">following</span><span class="w"> </span><span class="err">params</span><span class="w"> </span><span class="err">must</span><span class="w"> </span><span class="err">have</span><span class="w"> </span><span class="err">same</span><span class="w"> </span><span class="err">source_id</span><span class="w">
+    </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"params_1"</span><span class="p">:{</span><span class="w">
+    </span><span class="s2">"sub_params_0"</span><span class="p">:{</span><span class="w">
+      </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"param_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="p">,</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="s2">"param_0"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="example">Example</h3>
+
+<p><a href="https://share.nuclino.com/p/Example-AMRL-in-UMRF-HT2uUKM2LnAjMAKqbY3rH1">Amazon AMRL embedded in UMRF</a></p>
 
 <p><br /></p>
 <h2 id="action-source">Action Source</h2>
@@ -192,17 +272,38 @@
 <p>The AcSs are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that AcSs can be added or removed from a running instance of TeMoto.</p>
 
 <p><br /></p>
-<h2 id="action-packages">Action Packages</h2>
 
-<p>A TeMoto action is structured as a ROS Package (<a href="https://github.com/UTNuclearRoboticsPublic/temoto-telerobotics.github.io/tree/master/tasks/ai_show_env">example</a>):</p>
+<h2 id="temoto-actions">TeMoto Actions</h2>
 
+<p>In a nutshell TeMoto Action is an executable which accepts and outputs parameters as defined by its UMRF. In technical terms, action is a plugin that is described by UMRF. The UMRF file helps the Action Engine to choose the appropriate action.</p>
+
+<p>An action can contain arbitrary user libraries and code. Specifically, action is as a c++ Class which:</p>
 <ul>
-  <li>CMakeLists.txt</li>
-  <li>package.xml</li>
-  <li>semantic_frame.xml</li>
-  <li><strong>src</strong>/action_source.cpp</li>
-  <li><strong>lib</strong>/lib_action_source.so</li>
+  <li>implements the UMRF structure,</li>
+  <li>embeds the user written code,</li>
+  <li>inherits bunch of methods and parameters from a base action Class that are required by TeMoto,</li>
+  <li>is converted to a dynamically loadable plugin.</li>
 </ul>
+
+<p>Hence an action is nothing more than a c++ class which has a structure that corresponds to its UMRF. A base structure for an action can be easily generated with TeMoto’s <a href="https://temoto-telerobotics.github.io/tutorials/writing_an_action.html">Action Assistant</a> but it’s up to the user/developer to fill the blank AcS with appropriate code.</p>
+
+<p>Actions are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that actions can be added or removed from a running instance of TeMoto.</p>
+
+<h3 id="design-principles">Design Principles</h3>
+
+<p>TeMoto actions follow the according design principles (Fig. 1):</p>
+<ul>
+  <li>The number of parents (indexed by k) and children (indexed by l) of an action “A” is not limited.</li>
+  <li>The number of input parameters (indexed by n) and output parameters (indexed by m) of an action “A” is not limited.</li>
+  <li>Action “A” is executable only when all required input parameters are received (see <a href="#parameter-value-format">Parameter Value Format</a>).</li>
+  <li>All actions have an unique name (identifier).</li>
+</ul>
+
+<p align="center">
+  <img width="500" src="/temoto-telerobotics.github.io/site/doc/images/multiple_parent_umrf_action.png" />
+  <br />
+  <b> Fig. 1: </b>  TeMoto Action design principles
+</p>
 
 
 
