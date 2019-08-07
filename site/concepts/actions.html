@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>temoto-telerobotics.github.io by temoto-telerobotics</title>
 
-    <link rel="stylesheet" href="/temoto-telerobotics.github.io/site/assets/css/style.css?v=c27ab80d023a0aa85641973250692628285e3e2f">
+    <link rel="stylesheet" href="/temoto-telerobotics.github.io/site/assets/css/style.css?v=a2f270b4b727fdcbbc004cbe392c6d079f069c5e">
     <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -255,21 +255,6 @@
 <h3 id="example">Example</h3>
 
 <p><a href="https://share.nuclino.com/p/Example-AMRL-in-UMRF-HT2uUKM2LnAjMAKqbY3rH1">Amazon AMRL embedded in UMRF</a></p>
-
-<p><br /></p>
-<h2 id="action-source">Action Source</h2>
-
-<p>Action Source (AcS) is the implementation of a SF. In broader picture, SFs are used by TeMoto’s <a href="/temoto-telerobotics.github.io/site/managers/agent">Agent</a> for mapping input natural language sentences to executable AcSs. An AcS can contain arbitrary user libraries and code, given that the structure of the AcS follows the <a href="#todo">predefined format</a>. Specifically, AcS is as a c++ Class which:</p>
-<ul>
-  <li>implements the SF structure,</li>
-  <li>embeds the user written code,</li>
-  <li>inherits bunch of methods and parameters from a base AcS Class that are required by Temoto,</li>
-  <li>is converted to a dynamically loadable plugin.</li>
-</ul>
-
-<p>Hence the AcS is nothing more than a c++ class which has a structure that corresponds to its SF. A base structure for an AcS can be easily generated with TeMoto’s <a href="#todo">Semantic Frame Assistant</a> but it’s up to the user/developer to fill the blank AcS with appropriate code.</p>
-
-<p>The AcSs are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that AcSs can be added or removed from a running instance of TeMoto.</p>
 
 <p><br /></p>
 

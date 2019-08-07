@@ -147,19 +147,6 @@ For example:
 
 
 <br>
-## Action Source
-
-Action Source (AcS) is the implementation of a SF. In broader picture, SFs are used by TeMoto's [Agent](/temoto-telerobotics.github.io/site/managers/agent) for mapping input natural language sentences to executable AcSs. An AcS can contain arbitrary user libraries and code, given that the structure of the AcS follows the [predefined format](#todo). Specifically, AcS is as a c++ Class which:
-* implements the SF structure,
-* embeds the user written code,
-* inherits bunch of methods and parameters from a base AcS Class that are required by Temoto,
-* is converted to a dynamically loadable plugin.
-
-Hence the AcS is nothing more than a c++ class which has a structure that corresponds to its SF. A base structure for an AcS can be easily generated with TeMoto's [Semantic Frame Assistant](#todo) but it's up to the user/developer to fill the blank AcS with appropriate code.
-
-The AcSs are not embedded or compiled into TeMoto, but are dynamically loaded upon a request during run-time. This means that AcSs can be added or removed from a running instance of TeMoto.
-
-<br>
 
 ## TeMoto Actions
 
