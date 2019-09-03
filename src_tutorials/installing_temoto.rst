@@ -13,10 +13,10 @@ You can skip this part if you already have ROS and catkin workspace set up.
 .. code-block:: shell
 
     cd your_catkin_ws_dir/src
-    mkdir temoto && cd temoto
     git clone https://github.com/temoto-telerobotics/temoto.git
 
 **3) Install dependencies:**
+In your catkin_ws src folder, do
 
 .. code-block:: shell
 

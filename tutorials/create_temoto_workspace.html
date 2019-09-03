@@ -154,13 +154,18 @@
 </div>
 <p>TeMoto workspace is a ROS package that conveniently bundles up different configuration and launch files that are necessary for your TeMoto setup.
 In order to create your custom temoto workspace, follow these steps:</p>
-<p><strong>1) Navigate to your temoto base folder:</strong></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> your_catkin_ws_dir/src/temoto
-</pre></div>
-</div>
-<p><strong>2) Create a temoto workspace:</strong></p>
+<p><strong>1) Create a temoto workspace:</strong></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>rosrun temoto temoto_ws_generator NAME_FOR_YOUR_TEMOTO_WS
 </pre></div>
+</div>
+<p><strong>2) Build your catkin workspace:</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> your_catkin_ws_dir
+catkin build
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Don’t forget to source your catkin workspace</p>
 </div>
 </div>
 
