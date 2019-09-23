@@ -84,7 +84,7 @@ Now navigate to the generated package and open the `action <../../../temoto-tele
     gedit ta_add_numbers.cpp
 
 
-The `action <../../../temoto-telerobotics.github.io/site/concepts/actions>`_ source file contains a bunch of things that are necessary for TeMoto, but we are going to focus on a ``executeAction()`` function. This function is invoked when the action is executed.
+The `action <../../../temoto-telerobotics.github.io/site/concepts/actions>`_ source file contains a bunch of things that are necessary for TeMoto, but we are going to focus on a ``executeTemotoAction()`` function. This function is invoked when the action is executed.
 
 Locate the block comment which says "YOUR CODE HERE":
 
