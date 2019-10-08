@@ -7,6 +7,6 @@ TeMoto Tutorials
    installing_temoto
    create_temoto_workspace
    writing_an_action
-   utilizing_the_managers
+   using_the_component_manager
 
 

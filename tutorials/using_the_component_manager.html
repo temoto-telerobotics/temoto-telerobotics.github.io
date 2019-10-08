@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using The Component Manager &mdash; temoto_tutorials  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Writing an Action" href="writing_an_action.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> temoto_tutorials
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installing_temoto.html">Installing TeMoto</a></li>
+<li class="toctree-l1"><a class="reference internal" href="create_temoto_workspace.html">Creating TeMoto Workspace</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_an_action.html">Writing an Action</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using The Component Manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#component-manager-overview">Component Manager Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#components-via-actions">Components via Actions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-components-yaml-file">1) Create a <em>components.yaml</em> file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#set-up-the-component-manager-interface">2) Set up the Component Manager Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-the-component">3) Start the component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#add-a-custom-recovery-routine">4) Add a custom recovery routine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compile-and-test-the-action">5) Compile and test the action</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pipes-via-actions">Pipes via Actions</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">temoto_tutorials</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Using The Component Manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/using_the_component_manager.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-the-component-manager">
+<h1>Using The Component Manager<a class="headerlink" href="#using-the-component-manager" title="Permalink to this headline">¶</a></h1>
+<p>This tutorial covers the basic usage of the Component Manager – a manager which maintains knowledge about different components,
+such as cameras, LIDARs, data processing algorithms, etc. Actions can utilize the functionality of any particular Manager through
+the interface of an according Manager and the Component Manager follows the same pattern.</p>
+<p><strong>This tutorial shows how to:</strong></p>
+<ul class="simple">
+<li>create a custom <em>components.yaml</em> file</li>
+<li>set up the Component Manager Interface in a TeMoto Action</li>
+<li>start a component via Component Manager Interface</li>
+<li>set up a custom component failure recovery routine</li>
+</ul>
+<div class="section" id="component-manager-overview">
+<h2>Component Manager Overview<a class="headerlink" href="#component-manager-overview" title="Permalink to this headline">¶</a></h2>
+<p>Figure 1. shows the conceptual overview of how Component Manager works and how it’s used. The <strong>Component Manager</strong> itself is a ROS
+node which can be accessed through <strong>Component Manager Interface</strong> (a C++ header that implements necessary ROS service clients
+and exposes simplied interface to the user).</p>
+<p><strong>The components</strong> themselves are regarded as something that produce data (e.g., sensor)
+or process data (e.g, algorithm). Each component is a ROS node, and the Component Manager only maintains semantic knowledge about
+them and invokes them upon a request – so <strong>components are not idling</strong> in the background, they are executed dynamically during
+run-time.</p>
+<p>The semantic knowledge about the components (ROS package name; name of the executable; output topics; etc) is maintained in a
+<strong>components.yaml</strong> file and the Component Manager is periodically going thorugh the <em>catkin_workspace/src</em> directory and looks
+recursively for <em>components.yaml</em> files (which means that you can have multiple <em>components.yaml</em> files, one per each component
+package if you like).</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/component_manager_concept.png"><img alt="_images/component_manager_concept.png" src="_images/component_manager_concept.png" style="width: 450px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure. 1:</strong> Conceptual overview of how Component Manager works and how it’s used.</span></p>
+</div>
+</div>
+<div class="section" id="components-via-actions">
+<h2>Components via Actions<a class="headerlink" href="#components-via-actions" title="Permalink to this headline">¶</a></h2>
+<p>As a concrete example, we are going to start a camera and write a custom failure behaviour. Hence, due to the example we are trying
+to go for, it is required that you have a ROS package that is able to open stream the camera feed. The <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a>
+package will work just fine.</p>
+<div class="section" id="create-a-components-yaml-file">
+<h3>1) Create a <em>components.yaml</em> file<a class="headerlink" href="#create-a-components-yaml-file" title="Permalink to this headline">¶</a></h3>
+<p>You can create this file where ever in your catkin workspace but for the sake of having a clean workspace, create it in your
+TeMoto Workspace root directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Follow the <em>“Creating TeMoto workspace</em>” tutorial if you haven’t created a TeMoto workspace yet.</p>
+</div>
+<p>If you aready have the <em>components.yaml</em> file then great, you can just append it.</p>
+<p><strong>So in your *components.yaml* file, outline what’s the:</strong></p>
+<ul class="simple">
+<li><strong>name of the component</strong></li>
+<li><strong>type of the component</strong></li>
+<li><strong>name of the package</strong> where this component originates</li>
+<li><strong>name of the executable</strong> (something that you <em>rosrun/roslaunch</em>)</li>
+<li><strong>input topics</strong> types and default values (if any)</li>
+<li><strong>output topics</strong> types and default values (if any)</li>
+<li><strong>parameters</strong> and default values (if any)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <em>component name</em>, it’s <em>type</em> and the <em>topic types</em> are arbitrary, there are no hardcoded/preferred values in the Component Manager. The key is to use the chosen names consistently</p>
+</div>
+<p>For example, this is how the <em>component.yaml</em> file looks like for the <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a> based camera component:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">Components</span><span class="p p-Indicator">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">component_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">Laptop</span><span class="nv"> </span><span class="s">Integrated</span><span class="nv"> </span><span class="s">2D</span><span class="nv"> </span><span class="s">Camera&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">component_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;2d_camera&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">package_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">executable</span><span class="p p-Indicator">:</span>  <span class="s">&quot;usb_cam-test.launch&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">output_topics</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">camera_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/image_raw&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">camera_info</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/camera_info&quot;</span>
+</pre></div>
+</div>
+<p>This is just a simple example that gets the usb_cam recognized by the Context Manager. Unfortunately the default launch file that’s provided
+by the usb_cam package does not include argument remapping functionalities (important if you want your component to publish on a custom topic).
+You can use <a class="reference external" href="https://github.com/temoto-telerobotics-demos/icra_2020_ws/blob/jackal-ws/src/jackal_temoto_ws/jackal_temoto_ws/launch/usb_cam_remappable.launch">this launch file instead</a>
+if you want to enable remapping for your usb_cam based camera component.</p>
+</div>
+<div class="section" id="set-up-the-component-manager-interface">
+<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#set-up-the-component-manager-interface" title="Permalink to this headline">¶</a></h3>
+<p>Next we are going to modify the <em>.cpp</em> file of your Action and make it invoke the camera through Component Manager Interface.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Follow the <em>“Writing an Action</em>” tutorial if you haven’t created a TeMoto Action yet.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Pay close attention to whether your Action should be synchronous or asynchronous.</p>
+</div>
+<p>But first add Component Manager as a dependency in the <em>package.xml</em> and <em>CMakeLists.txt</em> files:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;build_depend&gt;</span>temoto_component_manager<span class="nt">&lt;/build_depend&gt;</span>
+<span class="nt">&lt;exec_depend&gt;</span>temoto_component_manager<span class="nt">&lt;/exec_depend&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-make notranslate"><div class="highlight"><pre><span></span>find_package(catkin REQUIRED COMPONENTS
+  ...
+  temoto_component_manager
+)
+</pre></div>
+</div>
+<p><strong>Open up the *&lt;your_action_name&gt;.cpp* file in the src directory of your Action and add the following lines:</strong></p>
+<p>Include the Component Manager Interface header.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&quot;temoto_component_manager/component_manager_interface.h&quot;</span><span class="cp"></span>
+</pre></div>
+</div>
+<p>Add the Component Manager Interface object as a member of your TeMoto Action class:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="k">public</span><span class="o">:</span>
+
+  <span class="c1">// Create component manager interface object to access the component manager</span>
+  <span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">ComponentManagerInterface</span><span class="o">&lt;</span><span class="n">TaYourActionsName</span><span class="o">&gt;</span> <span class="n">cmi_</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Do not forget to add the name of your action as a template parameter: <code class="docutils literal notranslate"><span class="pre">ComponentManagerInterface&lt;TaYourActionsName&gt;</span></code></p>
+</div>
+<p>Initialize the interface in the <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">executeTemotoAction()</span></code> method.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="c1">// Initialize the sensor manager interface</span>
+<span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="start-the-component">
+<h3>3) Start the component<a class="headerlink" href="#start-the-component" title="Permalink to this headline">¶</a></h3>
+<p>This step depends on the particular behaviour you are trying to achieve, hence the following is just an example for
+acquiring camera component via Component Manager Interface.</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">executeTemotoAction</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Initialize the component manager interface</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+  <span class="c1">// A structure for containing component topic related information</span>
+  <span class="n">ComponentTopicsReq</span> <span class="n">requested_topics</span><span class="p">;</span>
+
+  <span class="c1">// Specify what kind of topics the component should output. These are the same as</span>
+  <span class="c1">// outlined in the components.yaml file</span>
+  <span class="n">requested_topics</span><span class="p">.</span><span class="n">addOutputTopicType</span><span class="p">(</span><span class="s">&quot;camera_data&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Debug information</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Starting the 2d_camera component ...&quot;</span><span class="p">);</span>
+
+  <span class="cm">/*</span>
+<span class="cm">   * Invoke the &quot;startComponent&quot; method. This method requires the type of the sensor (2d_camera)</span>
+<span class="cm">   * and will output a structure that maintains the topic names which were received based</span>
+<span class="cm">   * on the request</span>
+<span class="cm">   */</span>
+  <span class="n">ComponentTopicsRes</span> <span class="n">responded_topics</span> <span class="o">=</span> <span class="n">cmi_</span><span class="p">.</span><span class="n">startComponent</span><span class="p">(</span><span class="s">&quot;2d_camera&quot;</span><span class="p">,</span> <span class="n">requested_topics</span><span class="p">);</span>
+
+  <span class="c1">// Get the name of the topic where camera feed is published</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">camera_data_topic</span> <span class="o">=</span> <span class="n">responded_topics</span><span class="p">.</span><span class="n">getOutputTopic</span><span class="p">(</span><span class="s">&quot;camera_data&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Debug information</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got camera data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">camera_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="add-a-custom-recovery-routine">
+<h3>4) Add a custom recovery routine<a class="headerlink" href="#add-a-custom-recovery-routine" title="Permalink to this headline">¶</a></h3>
+<p>If the component should fail in any way that leads to it’s termination, the Component Manager will automatically send a
+message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
+a component with similar parameters (component type, topic types, etc.) again but you can define your own custom routine
+that gets invoked instead.</p>
+<p>For that create a method with a return type of <code class="docutils literal notranslate"><span class="pre">void</span></code> and which accepts <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">temoto_component_manager::LoadComponent&amp;</span></code> reference:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief A custom component failure recovery routine. You can implement whatever you like</span>
+<span class="cm"> * in here, such as logging, system rollbacking, starting an alternative component ...</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">componentStatusCb</span><span class="p">(</span><span class="k">const</span> <span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">LoadComponent</span><span class="o">&amp;</span> <span class="n">comp_srv_msg</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">TEMOTO_WARN_STREAM</span><span class="p">(</span><span class="s">&quot;Received a status message:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">comp_srv_msg</span><span class="p">.</span><span class="n">request</span><span class="p">);</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Starting the 2d_camera component again ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">startComponent</span><span class="p">(</span><span class="s">&quot;2d_camera&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and register the custom recovery routine in the <code class="docutils literal notranslate"><span class="pre">executeTemotoAction()</span></code></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">executeTemotoAction</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Initialize the component manager interface</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+  <span class="cm">/*...*/</span>
+
+  <span class="c1">// Register the custom component recovery routine you have created before</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Registering a component status callback ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">registerComponentStatusCallback</span><span class="p">(</span><span class="o">&amp;</span><span class="n">TaYourActionName</span><span class="o">::</span><span class="n">componentStatusCb</span><span class="p">);</span>
+
+  <span class="cm">/*...*/</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="compile-and-test-the-action">
+<h3>5) Compile and test the action<a class="headerlink" href="#compile-and-test-the-action" title="Permalink to this headline">¶</a></h3>
+<p>Now the whole action should look something like this:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;class_loader/class_loader.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ta_your_action_name/temoto_action.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;ta_your_action_name/macros.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;temoto_component_manager/component_manager_interface.h&quot;</span><span class="cp"></span>
+
+<span class="cm">/*</span>
+<span class="cm"> * ACTION IMPLEMENTATION of TaYourActionName</span>
+<span class="cm"> */</span>
+<span class="k">class</span> <span class="nc">TaYourActionName</span> <span class="o">:</span> <span class="k">public</span> <span class="n">TemotoAction</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+<span class="c1">// Constructor. REQUIRED BY TEMOTO</span>
+<span class="n">TaYourActionName</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// ---&gt; YOUR CONSTRUCTION ROUTINES HERE &lt;--- //</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">__func__</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; constructed</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// REQUIRED BY TEMOTO</span>
+<span class="kt">void</span> <span class="n">executeTemotoAction</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Initialize the component manager interface</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+  <span class="c1">// Register the custom component recovery routine you have created before</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Registering a component status callback ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">registerComponentStatusCallback</span><span class="p">(</span><span class="o">&amp;</span><span class="n">TaYourActionName</span><span class="o">::</span><span class="n">componentStatusCb</span><span class="p">);</span>
+
+  <span class="c1">// A structure for containing component topic related information</span>
+  <span class="n">ComponentTopicsReq</span> <span class="n">requested_topics</span><span class="p">;</span>
+
+  <span class="c1">// Specify what kind of topics the component should output. These are the same as</span>
+  <span class="c1">// outlined in the components.yaml file</span>
+  <span class="n">requested_topics</span><span class="p">.</span><span class="n">addOutputTopicType</span><span class="p">(</span><span class="s">&quot;camera_data&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Debug information</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Starting the 2d_camera component ...&quot;</span><span class="p">);</span>
+
+  <span class="cm">/*</span>
+<span class="cm">   * Invoke the &quot;startComponent&quot; method. This method requires the type of the sensor (2d_camera)</span>
+<span class="cm">   * and will output a structure that maintains the topic names which were received based</span>
+<span class="cm">   * on the request</span>
+<span class="cm">   */</span>
+  <span class="n">ComponentTopicsRes</span> <span class="n">responded_topics</span> <span class="o">=</span> <span class="n">cmi_</span><span class="p">.</span><span class="n">startComponent</span><span class="p">(</span><span class="s">&quot;2d_camera&quot;</span><span class="p">,</span> <span class="n">requested_topics</span><span class="p">);</span>
+
+  <span class="c1">// Get the name of the topic where camera feed is published</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">camera_data_topic</span> <span class="o">=</span> <span class="n">responded_topics</span><span class="p">.</span><span class="n">getOutputTopic</span><span class="p">(</span><span class="s">&quot;camera_data&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Debug information</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got camera data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">camera_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// Destructor</span>
+<span class="o">~</span><span class="n">TaYourActionName</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// ---&gt; YOUR CONSTRUCTION ROUTINES HERE &lt;--- //</span>
+  <span class="n">TEMOTO_PRINT_OF</span><span class="p">(</span><span class="s">&quot;Destructor&quot;</span><span class="p">,</span> <span class="n">getUmrfPtr</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">getName</span><span class="p">());</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * @brief A custom component failure recovery routine. You can implement whatever you like</span>
+<span class="cm"> * in here, such as logging, system rollbacking, starting an alternative component ...</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="n">componentStatusCb</span><span class="p">(</span><span class="k">const</span> <span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">LoadComponent</span><span class="o">&amp;</span> <span class="n">comp_srv_msg</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">TEMOTO_WARN_STREAM</span><span class="p">(</span><span class="s">&quot;Received a status message:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">comp_srv_msg</span><span class="p">.</span><span class="n">request</span><span class="p">);</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Starting the 2d_camera component again ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">startComponent</span><span class="p">(</span><span class="s">&quot;2d_camera&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">ComponentManagerInterface</span><span class="o">&lt;</span><span class="n">TaYourActionName</span><span class="o">&gt;</span> <span class="n">cmi_</span><span class="p">;</span>
+
+<span class="p">};</span> <span class="c1">// TaYourActionName class</span>
+
+<span class="cm">/* REQUIRED BY CLASS LOADER */</span>
+<span class="n">CLASS_LOADER_REGISTER_CLASS</span><span class="p">(</span><span class="n">TaYourActionName</span><span class="p">,</span> <span class="n">ActionBase</span><span class="p">);</span>
+</pre></div>
+</div>
+<ul>
+<li><p class="first">Compile the Action (<code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code>).</p>
+</li>
+<li><p class="first">Test the action:</p>
+<p>In the first terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch your_temoto_workspace temoto.launch temoto_namespace:<span class="o">=</span>my_wakeword
+</pre></div>
+</div>
+<p>In the second terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch your_action_name action_test_separate.launch wake_word:<span class="o">=</span>my_wakeword
+</pre></div>
+</div>
+</li>
+<li><p class="first">Test the recovery behaviour. If you are using a non integrated camera, then you can test the recovery behaviour simply by unplugging
+and plugging the camera back in again. If you are using an integrated camera then you can test the recovery behaviour by
+killing the usb_cam process by <code class="docutils literal notranslate"><span class="pre">killall</span> <span class="pre">usb_cam</span></code> or get the PID by <code class="docutils literal notranslate"><span class="pre">ps</span> <span class="pre">-A</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">usb_cam</span></code> and kill by <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">PID</span></code>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="pipes-via-actions">
+<h2>Pipes via Actions<a class="headerlink" href="#pipes-via-actions" title="Permalink to this headline">¶</a></h2>
+<p>TODO.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="writing_an_action.html" class="btn btn-neutral" title="Writing an Action" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Robert Valner.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
