@@ -7,10 +7,10 @@ the interface of an according Manager and the Component Manager follows the same
 
 **This tutorial shows how to:**
 
-* create a custom *components.yaml* file
+* create a custom *components.yaml* and *pipes.yaml* file
 * set up the Component Manager Interface in a TeMoto Action
-* start a component via Component Manager Interface
-* set up a custom component failure recovery routine
+* start a component and a pipe via Component Manager Interface
+* set up a custom component and pipe failure recovery routine
 
 Component Manager Overview
 --------------------------
@@ -35,9 +35,19 @@ package if you like).
 
     **Figure. 1:** Conceptual overview of how Component Manager works and how it's used. 
 
+**Pipe management** is the second main feature of the Component Manager. Pipes are composed of **segments**, i.e., components, that sequentially pass 
+data from one segment to another. For example Figure 2. depicts a pipe which tracks objects based on filtered video data. The pipes are described
+via *pipes.yaml*, which, similarly to **components.yaml** are periodically indexed by the Component Manager.
 
-Components via Actions
-----------------------
+.. figure:: /images/component_manager/component_manager_pipe_example.png
+    :width: 400px
+    :align: center
+
+    **Figure. 2:** Example of a component pipe which tracks objects based on filtered video data. 
+
+
+Describing and using Components
+-------------------------------
 
 As a concrete example, we are going to start a camera and write a custom failure behaviour. Hence, due to the example we are trying
 to go for, it is required that you have a ROS package that is able to open stream the camera feed. The `"usb_cam" <http://wiki.ros.org/usb_cam>`_ 
@@ -314,7 +324,19 @@ Now the whole action should look something like this:
   and plugging the camera back in again. If you are using an integrated camera then you can test the recovery behaviour by
   killing the usb_cam process by ``killall usb_cam`` or get the PID by ``ps -A | grep usb_cam`` and kill by ``kill PID``. 
 
-Pipes via Actions
------------------
+Describing and using Pipes
+--------------------------
 
-TODO.
+In order to create and start using the pipes, a *pipes.yaml* file has to be created.
+
+1) Create a *pipes.yaml* file 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can create this file where ever in your catkin workspace but for the sake of having a clean workspace, create it in your
+TeMoto Workspace root directory.
+
+.. note:: Follow the *"Creating TeMoto workspace*" tutorial if you haven't created a TeMoto workspace yet.
+
+If you aready have the *pipes.yaml* file then great, you can just append it.
+
+**So in your *pipes.yaml* file, outline what's the:**

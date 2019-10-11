@@ -7,6 +7,12 @@ The basis for an action can be easily generated via TeMoto Action Assistant. Sin
 
 For the sake of example, this tutorial helps to create a TeMoto Action, which accepts two numbers as an input and outputs the sum of the input numbers.
 
+.. figure:: /images/action_engine/action_engine_overview.png
+    :width: 600px
+    :align: center
+
+    **Fig. 0:** Conceptual overview of how TeMoto Action Engine works. 
+
 1) Start the TeMoto Action Assistant
 """"""""""""""""""""""""""""""""""""
 

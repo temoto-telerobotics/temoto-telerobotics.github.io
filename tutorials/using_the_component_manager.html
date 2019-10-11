@@ -83,7 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="writing_an_action.html">Writing an Action</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using The Component Manager</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#component-manager-overview">Component Manager Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#components-via-actions">Components via Actions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#describing-and-using-components">Describing and using Components</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-components-yaml-file">1) Create a <em>components.yaml</em> file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#set-up-the-component-manager-interface">2) Set up the Component Manager Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#start-the-component">3) Start the component</a></li>
@@ -91,7 +91,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#compile-and-test-the-action">5) Compile and test the action</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#pipes-via-actions">Pipes via Actions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#describing-and-using-pipes">Describing and using Pipes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#create-a-pipes-yaml-file">1) Create a <em>pipes.yaml</em> file</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -165,10 +168,10 @@ such as cameras, LIDARs, data processing algorithms, etc. Actions can utilize th
 the interface of an according Manager and the Component Manager follows the same pattern.</p>
 <p><strong>This tutorial shows how to:</strong></p>
 <ul class="simple">
-<li>create a custom <em>components.yaml</em> file</li>
+<li>create a custom <em>components.yaml</em> and <em>pipes.yaml</em> file</li>
 <li>set up the Component Manager Interface in a TeMoto Action</li>
-<li>start a component via Component Manager Interface</li>
-<li>set up a custom component failure recovery routine</li>
+<li>start a component and a pipe via Component Manager Interface</li>
+<li>set up a custom component and pipe failure recovery routine</li>
 </ul>
 <div class="section" id="component-manager-overview">
 <h2>Component Manager Overview<a class="headerlink" href="#component-manager-overview" title="Permalink to this headline">¶</a></h2>
@@ -187,9 +190,16 @@ package if you like).</p>
 <a class="reference internal image-reference" href="_images/component_manager_concept.png"><img alt="_images/component_manager_concept.png" src="_images/component_manager_concept.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 1:</strong> Conceptual overview of how Component Manager works and how it’s used.</span></p>
 </div>
+<p><strong>Pipe management</strong> is the second main feature of the Component Manager. Pipes are composed of <strong>segments</strong>, i.e., components, that sequentially pass
+data from one segment to another. For example Figure 2. depicts a pipe which tracks objects based on filtered video data. The pipes are described
+via <em>pipes.yaml</em>, which, similarly to <strong>components.yaml</strong> are periodically indexed by the Component Manager.</p>
+<div class="figure align-center" id="id3">
+<a class="reference internal image-reference" href="_images/component_manager_pipe_example.png"><img alt="_images/component_manager_pipe_example.png" src="_images/component_manager_pipe_example.png" style="width: 400px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure. 2:</strong> Example of a component pipe which tracks objects based on filtered video data.</span></p>
 </div>
-<div class="section" id="components-via-actions">
-<h2>Components via Actions<a class="headerlink" href="#components-via-actions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="describing-and-using-components">
+<h2>Describing and using Components<a class="headerlink" href="#describing-and-using-components" title="Permalink to this headline">¶</a></h2>
 <p>As a concrete example, we are going to start a camera and write a custom failure behaviour. Hence, due to the example we are trying
 to go for, it is required that you have a ROS package that is able to open stream the camera feed. The <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a>
 package will work just fine.</p>
@@ -449,9 +459,20 @@ killing the usb_cam process by <code class="docutils literal notranslate"><span 
 </ul>
 </div>
 </div>
-<div class="section" id="pipes-via-actions">
-<h2>Pipes via Actions<a class="headerlink" href="#pipes-via-actions" title="Permalink to this headline">¶</a></h2>
-<p>TODO.</p>
+<div class="section" id="describing-and-using-pipes">
+<h2>Describing and using Pipes<a class="headerlink" href="#describing-and-using-pipes" title="Permalink to this headline">¶</a></h2>
+<p>In order to create and start using the pipes, a <em>pipes.yaml</em> file has to be created.</p>
+<div class="section" id="create-a-pipes-yaml-file">
+<h3>1) Create a <em>pipes.yaml</em> file<a class="headerlink" href="#create-a-pipes-yaml-file" title="Permalink to this headline">¶</a></h3>
+<p>You can create this file where ever in your catkin workspace but for the sake of having a clean workspace, create it in your
+TeMoto Workspace root directory.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Follow the <em>“Creating TeMoto workspace</em>” tutorial if you haven’t created a TeMoto workspace yet.</p>
+</div>
+<p>If you aready have the <em>pipes.yaml</em> file then great, you can just append it.</p>
+<p><strong>So in your *pipes.yaml* file, outline what’s the:</strong></p>
+</div>
 </div>
 </div>
 

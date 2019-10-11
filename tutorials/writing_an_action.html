@@ -162,6 +162,10 @@
 </div>
 <p>The basis for an action can be easily generated via TeMoto Action Assistant. Since the structure of an action is defined by its UMRF, the TeMoto Action Assistant provides the graphical interface for creating an UMRF. Once you are happy with the UMRF, a basis for action implementation package is generated, incuding a c++ source file.</p>
 <p>For the sake of example, this tutorial helps to create a TeMoto Action, which accepts two numbers as an input and outputs the sum of the input numbers.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/action_engine_overview.png"><img alt="_images/action_engine_overview.png" src="_images/action_engine_overview.png" style="width: 600px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Fig. 0:</strong> Conceptual overview of how TeMoto Action Engine works.</span></p>
+</div>
 <div class="section" id="start-the-temoto-action-assistant">
 <h2>1) Start the TeMoto Action Assistant<a class="headerlink" href="#start-the-temoto-action-assistant" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
@@ -172,7 +176,7 @@
 </pre></div>
 </div>
 <p>This should bring up the start screen of the action assistant, depicted in Fig. 1. If you have a feeling that the Action Assistant looks awfully similar to MoveIt! Setup Assistant, then you are correct, it’s based on it. Click on the <em>“Create New TeMoto Action Package”</em> button.</p>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id3">
 <a class="reference internal image-reference" href="_images/start_screen_umrf.png"><img alt="_images/start_screen_umrf.png" src="_images/start_screen_umrf.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Fig. 1:</strong> Start screen of the TeMoto Action Assistant</span></p>
 </div>
@@ -186,7 +190,7 @@
 <li><strong>Item Editor</strong> section, which allows to edit the currently active item in the UMRF Viewer.</li>
 </ul>
 </div></blockquote>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id4">
 <a class="reference internal image-reference" href="_images/umrf_editor_expl_umrf.png"><img alt="_images/umrf_editor_expl_umrf.png" src="_images/umrf_editor_expl_umrf.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Fig. 2:</strong> UMRF Editor tab</span></p>
 </div>
@@ -198,11 +202,11 @@
 <li>Add an output parameter change it’s name to <em>“output_1”</em> and it’s type to <em>“number”</em>.</li>
 </ul>
 <p>The UMRF is now done (end result shown in Fig. 4).</p>
-<div class="figure align-center" id="id4">
+<div class="figure align-center" id="id5">
 <a class="reference internal image-reference" href="_images/add_parameter_umrf.png"><img alt="_images/add_parameter_umrf.png" src="_images/add_parameter_umrf.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Fig. 3:</strong> Modify new input parameter</span></p>
 </div>
-<div class="figure align-center" id="id5">
+<div class="figure align-center" id="id6">
 <a class="reference internal image-reference" href="_images/final_umrf.png"><img alt="_images/final_umrf.png" src="_images/final_umrf.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Fig. 4:</strong> UMRF done</span></p>
 </div>
@@ -215,7 +219,7 @@
 <li>Since this tutorial assumes that the Action Assistant was opened via TeMoto workspace (see the first step in this tutorial), then the directory where the action will be generated is automatically set. If that’s not the case then select the directory where the action package is generated.</li>
 <li>Generate the package by clicking the <em>“Generate”</em> button.</li>
 </ul>
-<div class="figure align-center" id="id6">
+<div class="figure align-center" id="id7">
 <a class="reference internal image-reference" href="_images/generate_action_umrf.png"><img alt="_images/generate_action_umrf.png" src="_images/generate_action_umrf.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Fig. 5:</strong> Generate Action tab</span></p>
 </div>
