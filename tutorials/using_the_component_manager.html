@@ -93,6 +93,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#describing-and-using-pipes">Describing and using Pipes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-pipes-yaml-file">1) Create a <em>pipes.yaml</em> file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2) Set up the Component Manager Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#start-the-pipe">3) Start the pipe</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4) Add a custom recovery routine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5) Compile and test the action</a></li>
 </ul>
 </li>
 </ul>
@@ -186,14 +190,14 @@ run-time.</p>
 <strong>components.yaml</strong> file and the Component Manager is periodically going thorugh the <em>catkin_workspace/src</em> directory and looks
 recursively for <em>components.yaml</em> files (which means that you can have multiple <em>components.yaml</em> files, one per each component
 package if you like).</p>
-<div class="figure align-center" id="id2">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/component_manager_concept.png"><img alt="_images/component_manager_concept.png" src="_images/component_manager_concept.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 1:</strong> Conceptual overview of how Component Manager works and how it’s used.</span></p>
 </div>
 <p><strong>Pipe management</strong> is the second main feature of the Component Manager. Pipes are composed of <strong>segments</strong>, i.e., components, that sequentially pass
 data from one segment to another. For example Figure 2. depicts a pipe which tracks objects based on filtered video data. The pipes are described
 via <em>pipes.yaml</em>, which, similarly to <strong>components.yaml</strong> are periodically indexed by the Component Manager.</p>
-<div class="figure align-center" id="id3">
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/component_manager_pipe_example.png"><img alt="_images/component_manager_pipe_example.png" src="_images/component_manager_pipe_example.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 2:</strong> Example of a component pipe which tracks objects based on filtered video data.</span></p>
 </div>
@@ -258,10 +262,10 @@ if you want to enable remapping for your usb_cam based camera component.</p>
 <span class="nt">&lt;exec_depend&gt;</span>temoto_component_manager<span class="nt">&lt;/exec_depend&gt;</span>
 </pre></div>
 </div>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span>find_package(catkin REQUIRED COMPONENTS
-  ...
-  temoto_component_manager
-)
+<div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">catkin</span> <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span>
+  <span class="s">...</span>
+  <span class="s">temoto_component_manager</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Open up the *&lt;your_action_name&gt;.cpp* file in the src directory of your Action and add the following lines:</strong></p>
@@ -319,6 +323,10 @@ acquiring camera component via Component Manager Interface.</p>
   <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got camera data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">camera_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All started components are automatically stopped whenever the <cite>ComponentManagerInterface</cite> object is destroyed. The component can be explicitly stopped via <cite>stopComponent</cite> method</p>
 </div>
 </div>
 <div class="section" id="add-a-custom-recovery-routine">
@@ -461,7 +469,32 @@ killing the usb_cam process by <code class="docutils literal notranslate"><span 
 </div>
 <div class="section" id="describing-and-using-pipes">
 <h2>Describing and using Pipes<a class="headerlink" href="#describing-and-using-pipes" title="Permalink to this headline">¶</a></h2>
-<p>In order to create and start using the pipes, a <em>pipes.yaml</em> file has to be created.</p>
+<p>This part of the tutorial continues where the first part left off. We are going to build a simple pipe that sets up AR tag detection
+based on <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a> and <a class="reference external" href="http://wiki.ros.org/ar_track_alvar">“ar_track_alvar”</a> components, which
+means that you have to first describe those ROS packages as TeMoto components. If you followed the <a class="reference external" href="#describing-and-using-components">first part of the tutorial</a>,
+then you should already have a properly defined <code class="docutils literal notranslate"><span class="pre">2d_camera</span></code> component.</p>
+<p>The next step is to describe <a class="reference external" href="http://wiki.ros.org/ar_track_alvar">“ar_track_alvar”</a>
+as an, e.g., <code class="docutils literal notranslate"><span class="pre">ar_tag_tracker</span></code> component in your <cite>components.yaml</cite> file. The important bit over here is to <strong>consistently define the topic types</strong>
+that the <code class="docutils literal notranslate"><span class="pre">ar_tag_tacker</span></code> component is subscribing to. <a class="reference external" href="http://wiki.ros.org/ar_track_alvar">“ar_track_alvar”</a> requires, in addition to video stream,
+information about the parameters of the camera (camera info). So in our last example, the <code class="docutils literal notranslate"><span class="pre">2d_camera</span></code> component had <cite>camera_data</cite> and
+<cite>camera_info</cite> as output topic <strong>types</strong>, and thus, use the same topic types as input topics to the <code class="docutils literal notranslate"><span class="pre">ar_tag_tracker</span></code> component:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">component_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">AR</span><span class="nv"> </span><span class="s">tag</span><span class="nv"> </span><span class="s">tracker&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">component_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">package_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_track_alvar&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">executable</span><span class="p p-Indicator">:</span>  <span class="s">&quot;artag_remappable.launch&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">input_topics</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">camera_info</span><span class="p p-Indicator">:</span> <span class="s">&quot;camera_info&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">camera_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/raw&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">output_topics</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">visualization_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;visualization_marker&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">tag_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_pose_marker&quot;</span>
+  <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
+    <span class="l l-Scalar l-Scalar-Plain">frame_id</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam&quot;</span>
+</pre></div>
+</div>
+<p>Again, when invoking components via a <cite>launch file</cite> then it’s expecially importat that the <cite>launch file</cite>
+must allows remapping the input/output topics. Have a look at <a class="reference external" href="https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch">this as a reference</a>.</p>
+<p>Now that the components are set up, the next step is to create a <em>pipes.yaml</em> file.</p>
 <div class="section" id="create-a-pipes-yaml-file">
 <h3>1) Create a <em>pipes.yaml</em> file<a class="headerlink" href="#create-a-pipes-yaml-file" title="Permalink to this headline">¶</a></h3>
 <p>You can create this file where ever in your catkin workspace but for the sake of having a clean workspace, create it in your
@@ -471,7 +504,148 @@ TeMoto Workspace root directory.</p>
 <p class="last">Follow the <em>“Creating TeMoto workspace</em>” tutorial if you haven’t created a TeMoto workspace yet.</p>
 </div>
 <p>If you aready have the <em>pipes.yaml</em> file then great, you can just append it.</p>
-<p><strong>So in your *pipes.yaml* file, outline what’s the:</strong></p>
+<p>Here is an example how the <code class="docutils literal notranslate"><span class="pre">ar_tag_tracker_pipe</span></code> in <cite>pipes.yaml</cite> looks like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ar_tag_tracking</span><span class="p p-Indicator">:</span>
+<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span>
+
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">segment_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;2d_camera&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frame_id</span>
+    <span class="l l-Scalar l-Scalar-Plain">output_topic_types</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_info</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_data</span>
+
+  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">segment_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
+    <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frame_id</span>
+    <span class="l l-Scalar l-Scalar-Plain">input_topic_types</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_info</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_data</span>
+    <span class="l l-Scalar l-Scalar-Plain">output_topic_types</span><span class="p p-Indicator">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">visualization_data</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tag_data</span>
+</pre></div>
+</div>
+<p>So what can be seen from this example is that the structure of the <cite>pipes.yaml</cite> file is following</p>
+<ul class="simple">
+<li><strong>pipe_category_A</strong><ul>
+<li>pipe_method_0<ul>
+<li><cite>segment_0_1</cite></li>
+<li><cite>segment_0_2</cite></li>
+<li><cite>segment_0_3</cite></li>
+</ul>
+</li>
+<li>pipe_method_1<ul>
+<li><cite>segment_1_1</cite></li>
+<li><cite>segment_1_2</cite></li>
+</ul>
+</li>
+<li>…</li>
+</ul>
+</li>
+<li><strong>pipe_category_B</strong><ul>
+<li>…</li>
+</ul>
+</li>
+</ul>
+<p>where</p>
+<ul class="simple">
+<li><strong>pipe category</strong> indicates the generic purpose of the pipes outlined under it</li>
+<li><strong>method</strong> allows to define different alternatives for achieving the same pipe functionality</li>
+<li><strong>segment</strong> describes what kind of component should be used for a particular pipe method</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The order of the segments in <cite>pipes.yaml</cite> file matters. That’s how the pipe will be assembled</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<p>The steps in this sections are identical to what has been <a class="reference external" href="#set-up-the-component-manager-interface">described in here</a>.</p>
+</div>
+<div class="section" id="start-the-pipe">
+<h3>3) Start the pipe<a class="headerlink" href="#start-the-pipe" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">executeTemotoAction</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Initialize the component manager interface</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+  <span class="c1">// Start the pipe and get the output topics of the last pipe segment</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Starting the ar_tag_tracking pipe ...&quot;</span><span class="p">);</span>
+  <span class="n">temoto_core</span><span class="o">::</span><span class="n">TopicContainer</span> <span class="n">pipe_topics</span> <span class="o">=</span> <span class="n">cmi_</span><span class="p">.</span><span class="n">startPipe</span><span class="p">(</span><span class="s">&quot;ar_tag_tracking&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Get the name of the topic where camera feed is published</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">tag_data_topic</span> <span class="o">=</span> <span class="n">pipe_topics</span><span class="p">.</span><span class="n">getOutputTopic</span><span class="p">(</span><span class="s">&quot;tag_data&quot;</span><span class="p">);</span>
+
+  <span class="c1">// Debug information</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got AR tag data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">tag_data_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
+
+  <span class="cm">/*</span>
+<span class="cm">   * Now your pipe is set. Create a subscriber to tag_data_topic or do whatever you need to do with the topic</span>
+<span class="cm">   */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All started pipes are automatically stopped whenever the <cite>ComponentManagerInterface</cite> object is destroyed. The pipe can be explicitly stopped via <cite>stopPipe</cite> method</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>4) Add a custom recovery routine<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<p>If any pipe segment should fail in any way that leads to it’s termination, the Component Manager will automatically send a
+message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
+a pipe with similar parameters again but you can define your own custom routine that gets invoked instead.</p>
+<p>For that create a method with a return type of <code class="docutils literal notranslate"><span class="pre">void</span></code> and which accepts <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">temoto_component_manager::LoadPipe&amp;</span></code> reference:</p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm"> * @brief A custom pipe failure recovery routine. You can implement whatever you like</span>
+<span class="cm"> * in here, such as logging, system rollbacking, starting an alternative pipe ...</span>
+<span class="cm"> */</span>
+<span class="kt">void</span> <span class="nf">pipeStatusCb</span><span class="p">(</span><span class="k">const</span> <span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">LoadPipe</span><span class="o">&amp;</span> <span class="n">pipe_srv_msg</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">TEMOTO_WARN_STREAM</span><span class="p">(</span><span class="s">&quot;Received a status message:</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pipe_srv_msg</span><span class="p">.</span><span class="n">request</span><span class="p">);</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Starting the pipe again ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">startPipe</span><span class="p">(</span><span class="n">pipe_srv_msg</span><span class="p">.</span><span class="n">request</span><span class="p">.</span><span class="n">pipe_category</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>and register the custom recovery routine in the <code class="docutils literal notranslate"><span class="pre">executeTemotoAction()</span></code></p>
+<div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">executeTemotoAction</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Initialize the component manager interface</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">initialize</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+
+  <span class="cm">/*...*/</span>
+
+  <span class="c1">// Register the custom pipe recovery routine you have created before</span>
+  <span class="n">TEMOTO_INFO</span><span class="p">(</span><span class="s">&quot;Registering a pipe status callback ...&quot;</span><span class="p">);</span>
+  <span class="n">cmi_</span><span class="p">.</span><span class="n">registerPipeStatusCallback</span><span class="p">(</span><span class="o">&amp;</span><span class="n">TaYourActionName</span><span class="o">::</span><span class="n">pipeStatusCb</span><span class="p">);</span>
+
+  <span class="cm">/*...*/</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>5) Compile and test the action<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">Compile the Action (<code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code>).</p>
+</li>
+<li><p class="first">Test the action:</p>
+<p>In the first terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch your_temoto_workspace temoto.launch temoto_namespace:<span class="o">=</span>my_wakeword
+</pre></div>
+</div>
+<p>In the second terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>roslaunch your_action_name action_test_separate.launch wake_word:<span class="o">=</span>my_wakeword
+</pre></div>
+</div>
+</li>
+<li><p class="first">Test the recovery behaviour. If you are using a non integrated camera, then you can test the recovery behaviour simply by unplugging
+and plugging the camera back in again. If you are using an integrated camera then you can test the recovery behaviour by
+killing the usb_cam process by <code class="docutils literal notranslate"><span class="pre">killall</span> <span class="pre">usb_cam</span></code> or get the PID by <code class="docutils literal notranslate"><span class="pre">ps</span> <span class="pre">-A</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">usb_cam</span></code> and kill by <code class="docutils literal notranslate"><span class="pre">kill</span> <span class="pre">PID</span></code>.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>

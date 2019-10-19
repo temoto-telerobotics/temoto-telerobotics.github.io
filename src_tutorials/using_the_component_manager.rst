@@ -108,7 +108,7 @@ But first add Component Manager as a dependency in the *package.xml* and *CMakeL
   <build_depend>temoto_component_manager</build_depend>
   <exec_depend>temoto_component_manager</exec_depend>
 
-.. code-block:: make
+.. code-block:: cmake
 
   find_package(catkin REQUIRED COMPONENTS
     ...
@@ -142,7 +142,7 @@ Initialize the interface in the ``void executeTemotoAction()`` method.
   cmi_.initialize(this);
 
 3) Start the component
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 This step depends on the particular behaviour you are trying to achieve, hence the following is just an example for 
 acquiring camera component via Component Manager Interface. 
@@ -177,6 +177,8 @@ acquiring camera component via Component Manager Interface.
     // Debug information
     TEMOTO_INFO_STREAM("Got camera data on topic '" << camera_topic << "'");
   }
+
+.. note:: All started components are automatically stopped whenever the `ComponentManagerInterface` object is destroyed. The component can be explicitly stopped via `stopComponent` method 
 
 4) Add a custom recovery routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -326,12 +328,39 @@ Now the whole action should look something like this:
 
 Describing and using Pipes
 --------------------------
+This part of the tutorial continues where the first part left off. We are going to build a simple pipe that sets up AR tag detection
+based on `"usb_cam" <http://wiki.ros.org/usb_cam>`_ and `"ar_track_alvar" <http://wiki.ros.org/ar_track_alvar>`_ components, which
+means that you have to first describe those ROS packages as TeMoto components. If you followed the `first part of the tutorial <#describing-and-using-components>`_,
+then you should already have a properly defined ``2d_camera`` component.
 
-In order to create and start using the pipes, a *pipes.yaml* file has to be created.
+The next step is to describe `"ar_track_alvar" <http://wiki.ros.org/ar_track_alvar>`_
+as an, e.g., ``ar_tag_tracker`` component in your `components.yaml` file. The important bit over here is to **consistently define the topic types** 
+that the ``ar_tag_tacker`` component is subscribing to. `"ar_track_alvar" <http://wiki.ros.org/ar_track_alvar>`_ requires, in addition to video stream,
+information about the parameters of the camera (camera info). So in our last example, the ``2d_camera`` component had `camera_data` and
+`camera_info` as output topic **types**, and thus, use the same topic types as input topics to the ``ar_tag_tracker`` component:
+
+.. code-block:: yaml
+
+  - component_name: "My AR tag tracker"
+    component_type: "ar_tag_tracker"
+    package_name: "ar_track_alvar"
+    executable:  "artag_remappable.launch"
+    input_topics:
+      camera_info: "camera_info"
+      camera_data: "usb_cam/raw"
+    output_topics:
+      visualization_data: "visualization_marker"
+      tag_data: "ar_pose_marker"
+    required_parameters:
+      frame_id: "usb_cam"
+
+Again, when invoking components via a `launch file` then it's expecially importat that the `launch file`
+must allows remapping the input/output topics. Have a look at `this as a reference <https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch>`_. 
+
+Now that the components are set up, the next step is to create a *pipes.yaml* file.
 
 1) Create a *pipes.yaml* file 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 You can create this file where ever in your catkin workspace but for the sake of having a clean workspace, create it in your
 TeMoto Workspace root directory.
 
@@ -339,4 +368,150 @@ TeMoto Workspace root directory.
 
 If you aready have the *pipes.yaml* file then great, you can just append it.
 
-**So in your *pipes.yaml* file, outline what's the:**
+Here is an example how the ``ar_tag_tracker_pipe`` in `pipes.yaml` looks like:
+
+.. code-block:: yaml
+
+  ar_tag_tracking:
+  - method:
+
+    - segment_type: "2d_camera"
+      required_parameters:
+        - frame_id
+      output_topic_types:
+        - camera_info
+        - camera_data
+
+    - segment_type: "ar_tag_tracker"
+      required_parameters:
+        - frame_id
+      input_topic_types:
+        - camera_info
+        - camera_data
+      output_topic_types:
+        - visualization_data
+        - tag_data
+
+So what can be seen from this example is that the structure of the `pipes.yaml` file is following
+
+* **pipe_category_A**
+
+  * pipe_method_0
+
+    * `segment_0_1`
+    * `segment_0_2`
+    * `segment_0_3`
+
+  * pipe_method_1
+
+    * `segment_1_1`
+    * `segment_1_2`
+
+  * ...
+
+* **pipe_category_B**
+
+  * ...
+
+where
+
+* **pipe category** indicates the generic purpose of the pipes outlined under it
+* **method** allows to define different alternatives for achieving the same pipe functionality 
+* **segment** describes what kind of component should be used for a particular pipe method
+
+.. note:: The order of the segments in `pipes.yaml` file matters. That's how the pipe will be assembled
+
+2) Set up the Component Manager Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The steps in this sections are identical to what has been `described in here <#set-up-the-component-manager-interface>`_.
+
+3) Start the pipe
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: c++
+
+  void executeTemotoAction()
+  {
+    // Initialize the component manager interface
+    cmi_.initialize(this);
+
+    // Start the pipe and get the output topics of the last pipe segment
+    TEMOTO_INFO("Starting the ar_tag_tracking pipe ...");
+    temoto_core::TopicContainer pipe_topics = cmi_.startPipe("ar_tag_tracking");
+
+    // Get the name of the topic where camera feed is published
+    std::string tag_data_topic = pipe_topics.getOutputTopic("tag_data");
+
+    // Debug information
+    TEMOTO_INFO_STREAM("Got AR tag data on topic '" << tag_data_topic << "'");
+
+    /*
+     * Now your pipe is set. Create a subscriber to tag_data_topic or do whatever you need to do with the topic
+     */ 
+  }
+
+.. note:: All started pipes are automatically stopped whenever the `ComponentManagerInterface` object is destroyed. The pipe can be explicitly stopped via `stopPipe` method 
+
+4) Add a custom recovery routine
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If any pipe segment should fail in any way that leads to it's termination, the Component Manager will automatically send a
+message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
+a pipe with similar parameters again but you can define your own custom routine that gets invoked instead. 
+
+For that create a method with a return type of ``void`` and which accepts ``const temoto_component_manager::LoadPipe&`` reference:
+
+.. code-block:: c++
+
+  /**
+   * @brief A custom pipe failure recovery routine. You can implement whatever you like
+   * in here, such as logging, system rollbacking, starting an alternative pipe ... 
+   */
+  void pipeStatusCb(const temoto_component_manager::LoadPipe& pipe_srv_msg)
+  {
+    TEMOTO_WARN_STREAM("Received a status message:\n" << pipe_srv_msg.request);
+    TEMOTO_INFO_STREAM("Starting the pipe again ...");
+    cmi_.startPipe(pipe_srv_msg.request.pipe_category);
+  }
+
+and register the custom recovery routine in the ``executeTemotoAction()``
+
+.. code-block:: c++
+
+  void executeTemotoAction()
+  {
+    // Initialize the component manager interface
+    cmi_.initialize(this);
+
+    /*...*/
+
+    // Register the custom pipe recovery routine you have created before
+    TEMOTO_INFO("Registering a pipe status callback ...");
+    cmi_.registerPipeStatusCallback(&TaYourActionName::pipeStatusCb);
+
+    /*...*/
+  }
+
+
+5) Compile and test the action
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Compile the Action (``catkin build``).
+* Test the action:
+
+  In the first terminal:
+
+  .. code-block:: bash
+
+    roslaunch your_temoto_workspace temoto.launch temoto_namespace:=my_wakeword
+
+  In the second terminal:
+
+  .. code-block:: bash
+
+    roslaunch your_action_name action_test_separate.launch wake_word:=my_wakeword
+
+* Test the recovery behaviour. If you are using a non integrated camera, then you can test the recovery behaviour simply by unplugging 
+  and plugging the camera back in again. If you are using an integrated camera then you can test the recovery behaviour by
+  killing the usb_cam process by ``killall usb_cam`` or get the PID by ``ps -A | grep usb_cam`` and kill by ``kill PID``. 

@@ -166,7 +166,7 @@ Actions are not embedded or compiled into TeMoto, but are dynamically loaded upo
 
 TeMoto actions follow the according design principles (Fig. 1):
 * The number of parents (indexed by k) and children (indexed by l) of an action "A" is not limited. 
-* The number of input parameters (indexed by n) and output parameters (indexed by m) of an action "A" is not limited.
+* The number of input parameters (indexed by n) and output parameters (indexed by m) of an action "A" is not limmetmited.
 * Action "A" is executable only when all required input parameters are received (see [Parameter Value Format](#parameter-value-format)).
 * All actions have an unique name (identifier).
 
