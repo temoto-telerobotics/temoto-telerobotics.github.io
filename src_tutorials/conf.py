@@ -20,8 +20,8 @@
 # -- Project information -----------------------------------------------------
 
 project = u'temoto_tutorials'
-copyright = u'2018, Robert Valner'
-author = u'Robert Valner'
+copyright = u'2019, TeMoto Telerobotics'
+author = u'TeMoto Telerobotics'
 
 # The short X.Y version
 version = u''
@@ -146,7 +146,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'temoto_tutorials.tex', u'temoto\\_tutorials Documentation',
-     u'Robert Valner', 'manual'),
+     u'TeMoto Telerobotics', 'manual'),
 ]
 
 

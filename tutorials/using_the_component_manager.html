@@ -17,33 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Writing an Action" href="writing_an_action.html" /> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
 </head>
 
 <body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -82,6 +84,7 @@
 <li class="toctree-l1"><a class="reference internal" href="create_temoto_workspace.html">Creating TeMoto Workspace</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_an_action.html">Writing an Action</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using The Component Manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">C++ API reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#component-manager-overview">Component Manager Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#describing-and-using-components">Describing and using Components</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-components-yaml-file">1) Create a <em>components.yaml</em> file</a></li>
@@ -93,10 +96,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#describing-and-using-pipes">Describing and using Pipes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-pipes-yaml-file">1) Create a <em>pipes.yaml</em> file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id5">2) Set up the Component Manager Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">2) Set up the Component Manager Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#start-the-pipe">3) Start the pipe</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">4) Add a custom recovery routine</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">5) Compile and test the action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">4) Add a custom recovery routine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">5) Compile and test the action</a></li>
 </ul>
 </li>
 </ul>
@@ -167,6 +170,8 @@
             
   <div class="section" id="using-the-component-manager">
 <h1>Using The Component Manager<a class="headerlink" href="#using-the-component-manager" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference external" href="../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html">C++ API reference</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>This tutorial covers the basic usage of the Component Manager – a manager which maintains knowledge about different components,
 such as cameras, LIDARs, data processing algorithms, etc. Actions can utilize the functionality of any particular Manager through
 the interface of an according Manager and the Component Manager follows the same pattern.</p>
@@ -177,6 +182,7 @@ the interface of an according Manager and the Component Manager follows the same
 <li>start a component and a pipe via Component Manager Interface</li>
 <li>set up a custom component and pipe failure recovery routine</li>
 </ul>
+</div>
 <div class="section" id="component-manager-overview">
 <h2>Component Manager Overview<a class="headerlink" href="#component-manager-overview" title="Permalink to this headline">¶</a></h2>
 <p>Figure 1. shows the conceptual overview of how Component Manager works and how it’s used. The <strong>Component Manager</strong> itself is a ROS
@@ -190,14 +196,14 @@ run-time.</p>
 <strong>components.yaml</strong> file and the Component Manager is periodically going thorugh the <em>catkin_workspace/src</em> directory and looks
 recursively for <em>components.yaml</em> files (which means that you can have multiple <em>components.yaml</em> files, one per each component
 package if you like).</p>
-<div class="figure align-center" id="id8">
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/component_manager_concept.png"><img alt="_images/component_manager_concept.png" src="_images/component_manager_concept.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 1:</strong> Conceptual overview of how Component Manager works and how it’s used.</span></p>
 </div>
 <p><strong>Pipe management</strong> is the second main feature of the Component Manager. Pipes are composed of <strong>segments</strong>, i.e., components, that sequentially pass
 data from one segment to another. For example Figure 2. depicts a pipe which tracks objects based on filtered video data. The pipes are described
 via <em>pipes.yaml</em>, which, similarly to <strong>components.yaml</strong> are periodically indexed by the Component Manager.</p>
-<div class="figure align-center" id="id9">
+<div class="figure align-center" id="id10">
 <a class="reference internal image-reference" href="_images/component_manager_pipe_example.png"><img alt="_images/component_manager_pipe_example.png" src="_images/component_manager_pipe_example.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 2:</strong> Example of a component pipe which tracks objects based on filtered video data.</span></p>
 </div>
@@ -226,9 +232,10 @@ TeMoto Workspace root directory.</p>
 <li><strong>output topics</strong> types and default values (if any)</li>
 <li><strong>parameters</strong> and default values (if any)</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The <em>component name</em>, it’s <em>type</em> and the <em>topic types</em> are arbitrary, there are no hardcoded/preferred values in the Component Manager. The key is to use the chosen names consistently</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p>The <cite>component_name</cite>, it’s <cite>type</cite> and the <cite>topic types</cite> are arbitrary, there are no hardcoded/preferred values in the Component Manager.</p>
+<p class="last"><strong>The key is to use the chosen names consistently</strong></p>
 </div>
 <p>For example, this is how the <em>component.yaml</em> file looks like for the <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a> based camera component:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">Components</span><span class="p p-Indicator">:</span>
@@ -280,8 +287,8 @@ if you want to enable remapping for your usb_cam based camera component.</p>
   <span class="n">temoto_component_manager</span><span class="o">::</span><span class="n">ComponentManagerInterface</span><span class="o">&lt;</span><span class="n">TaYourActionsName</span><span class="o">&gt;</span> <span class="n">cmi_</span><span class="p">;</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
 <p class="last">Do not forget to add the name of your action as a template parameter: <code class="docutils literal notranslate"><span class="pre">ComponentManagerInterface&lt;TaYourActionsName&gt;</span></code></p>
 </div>
 <p>Initialize the interface in the <code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">executeTemotoAction()</span></code> method.</p>
@@ -492,8 +499,8 @@ information about the parameters of the camera (camera info). So in our last exa
     <span class="l l-Scalar l-Scalar-Plain">frame_id</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam&quot;</span>
 </pre></div>
 </div>
-<p>Again, when invoking components via a <cite>launch file</cite> then it’s expecially importat that the <cite>launch file</cite>
-must allows remapping the input/output topics. Have a look at <a class="reference external" href="https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch">this as a reference</a>.</p>
+<p>Again, when invoking components via a <cite>launch file</cite> then it’s especially importat that the <cite>launch file</cite>
+allows remapping the input/output topics. Have a look at <a class="reference external" href="https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch">this as a reference</a>.</p>
 <p>Now that the components are set up, the next step is to create a <em>pipes.yaml</em> file.</p>
 <div class="section" id="create-a-pipes-yaml-file">
 <h3>1) Create a <em>pipes.yaml</em> file<a class="headerlink" href="#create-a-pipes-yaml-file" title="Permalink to this headline">¶</a></h3>
@@ -554,13 +561,13 @@ TeMoto Workspace root directory.</p>
 <li><strong>method</strong> allows to define different alternatives for achieving the same pipe functionality</li>
 <li><strong>segment</strong> describes what kind of component should be used for a particular pipe method</li>
 </ul>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
 <p class="last">The order of the segments in <cite>pipes.yaml</cite> file matters. That’s how the pipe will be assembled</p>
 </div>
 </div>
-<div class="section" id="id5">
-<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>The steps in this sections are identical to what has been <a class="reference external" href="#set-up-the-component-manager-interface">described in here</a>.</p>
 </div>
 <div class="section" id="start-the-pipe">
@@ -591,8 +598,8 @@ TeMoto Workspace root directory.</p>
 <p class="last">All started pipes are automatically stopped whenever the <cite>ComponentManagerInterface</cite> object is destroyed. The pipe can be explicitly stopped via <cite>stopPipe</cite> method</p>
 </div>
 </div>
-<div class="section" id="id6">
-<h3>4) Add a custom recovery routine<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>4) Add a custom recovery routine<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>If any pipe segment should fail in any way that leads to it’s termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a pipe with similar parameters again but you can define your own custom routine that gets invoked instead.</p>
@@ -626,8 +633,8 @@ a pipe with similar parameters again but you can define your own custom routine 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id7">
-<h3>5) Compile and test the action<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>5) Compile and test the action<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">Compile the Action (<code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code>).</p>
 </li>
@@ -659,7 +666,7 @@ killing the usb_cam process by <code class="docutils literal notranslate"><span 
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="writing_an_action.html" class="btn btn-neutral" title="Writing an Action" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="writing_an_action.html" class="btn btn-neutral float-left" title="Writing an Action" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -668,7 +675,7 @@ killing the usb_cam process by <code class="docutils literal notranslate"><span 
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018, Robert Valner.
+        &copy; Copyright 2019, TeMoto Telerobotics
 
     </p>
   </div>
@@ -685,32 +692,16 @@ killing the usb_cam process by <code class="docutils literal notranslate"><span 
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  <script type="text/javascript" src="_static/js/theme.js"></script>
-
   <script type="text/javascript">
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script> 
+  </script>
+
+  
+  
+    
+   
 
 </body>
 </html>

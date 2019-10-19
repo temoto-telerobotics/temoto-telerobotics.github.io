@@ -1,0 +1,9 @@
+[submodule "api_doc/temoto_subsystems/temoto_component_manager"]
+	path = api_doc/temoto_subsystems/temoto_component_manager
+	url = https://github.com/temoto-telerobotics/temoto_component_manager
+[submodule "api_doc/temoto_subsystems/temoto_action_engine"]
+	path = api_doc/temoto_subsystems/temoto_action_engine
+	url = https://github.com/temoto-telerobotics/temoto_action_engine
+[submodule "api_doc/temoto_subsystems/temoto_core"]
+	path = api_doc/temoto_subsystems/temoto_core
+	url = https://github.com/temoto-telerobotics/temoto_core

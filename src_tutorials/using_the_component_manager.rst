@@ -1,6 +1,9 @@
 Using The Component Manager
 ===========================
 
+`C++ API reference <../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html>`_
+----------------------------------------------------------------------------------------------
+
 This tutorial covers the basic usage of the Component Manager -- a manager which maintains knowledge about different components,
 such as cameras, LIDARs, data processing algorithms, etc. Actions can utilize the functionality of any particular Manager through
 the interface of an according Manager and the Component Manager follows the same pattern. 
@@ -73,7 +76,11 @@ If you aready have the *components.yaml* file then great, you can just append it
 * **output topics** types and default values (if any)
 * **parameters** and default values (if any)
 
-.. note:: The *component name*, it's *type* and the *topic types* are arbitrary, there are no hardcoded/preferred values in the Component Manager. The key is to use the chosen names consistently
+.. important:: 
+
+  The `component_name`, it's `type` and the `topic types` are arbitrary, there are no hardcoded/preferred values in the Component Manager.
+
+  **The key is to use the chosen names consistently**
 
 For example, this is how the *component.yaml* file looks like for the `"usb_cam" <http://wiki.ros.org/usb_cam>`_ based camera component:
 
@@ -132,7 +139,7 @@ Add the Component Manager Interface object as a member of your TeMoto Action cla
     // Create component manager interface object to access the component manager
     temoto_component_manager::ComponentManagerInterface<TaYourActionsName> cmi_;
 
-.. note:: Do not forget to add the name of your action as a template parameter: ``ComponentManagerInterface<TaYourActionsName>``
+.. important:: Do not forget to add the name of your action as a template parameter: ``ComponentManagerInterface<TaYourActionsName>``
 
 Initialize the interface in the ``void executeTemotoAction()`` method.
 
@@ -354,8 +361,8 @@ information about the parameters of the camera (camera info). So in our last exa
     required_parameters:
       frame_id: "usb_cam"
 
-Again, when invoking components via a `launch file` then it's expecially importat that the `launch file`
-must allows remapping the input/output topics. Have a look at `this as a reference <https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch>`_. 
+Again, when invoking components via a `launch file` then it's especially importat that the `launch file`
+allows remapping the input/output topics. Have a look at `this as a reference <https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch>`_. 
 
 Now that the components are set up, the next step is to create a *pipes.yaml* file.
 
@@ -419,7 +426,7 @@ where
 * **method** allows to define different alternatives for achieving the same pipe functionality 
 * **segment** describes what kind of component should be used for a particular pipe method
 
-.. note:: The order of the segments in `pipes.yaml` file matters. That's how the pipe will be assembled
+.. important:: The order of the segments in `pipes.yaml` file matters. That's how the pipe will be assembled
 
 2) Set up the Component Manager Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
