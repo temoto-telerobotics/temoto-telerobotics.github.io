@@ -238,14 +238,14 @@ TeMoto Workspace root directory.</p>
 <p class="last"><strong>The key is to use the chosen names consistently</strong></p>
 </div>
 <p>For example, this is how the <em>component.yaml</em> file looks like for the <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a> based camera component:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">Components</span><span class="p p-Indicator">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">component_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">Laptop</span><span class="nv"> </span><span class="s">Integrated</span><span class="nv"> </span><span class="s">2D</span><span class="nv"> </span><span class="s">Camera&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">component_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;2d_camera&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">package_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">executable</span><span class="p p-Indicator">:</span>  <span class="s">&quot;usb_cam-test.launch&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">output_topics</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">camera_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/image_raw&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">camera_info</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/camera_info&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">Components</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">component_name</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">Laptop</span><span class="nv"> </span><span class="s">Integrated</span><span class="nv"> </span><span class="s">2D</span><span class="nv"> </span><span class="s">Camera&quot;</span>
+  <span class="nt">component_type</span><span class="p">:</span> <span class="s">&quot;2d_camera&quot;</span>
+  <span class="nt">package_name</span><span class="p">:</span> <span class="s">&quot;usb_cam&quot;</span>
+  <span class="nt">executable</span><span class="p">:</span>  <span class="s">&quot;usb_cam-test.launch&quot;</span>
+  <span class="nt">output_topics</span><span class="p">:</span>
+    <span class="nt">camera_data</span><span class="p">:</span> <span class="s">&quot;usb_cam/image_raw&quot;</span>
+    <span class="nt">camera_info</span><span class="p">:</span> <span class="s">&quot;usb_cam/camera_info&quot;</span>
 </pre></div>
 </div>
 <p>This is just a simple example that gets the usb_cam recognized by the Context Manager. Unfortunately the default launch file that’s provided
@@ -485,18 +485,18 @@ as an, e.g., <code class="docutils literal notranslate"><span class="pre">ar_tag
 that the <code class="docutils literal notranslate"><span class="pre">ar_tag_tacker</span></code> component is subscribing to. <a class="reference external" href="http://wiki.ros.org/ar_track_alvar">“ar_track_alvar”</a> requires, in addition to video stream,
 information about the parameters of the camera (camera info). So in our last example, the <code class="docutils literal notranslate"><span class="pre">2d_camera</span></code> component had <cite>camera_data</cite> and
 <cite>camera_info</cite> as output topic <strong>types</strong>, and thus, use the same topic types as input topics to the <code class="docutils literal notranslate"><span class="pre">ar_tag_tracker</span></code> component:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">component_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">AR</span><span class="nv"> </span><span class="s">tag</span><span class="nv"> </span><span class="s">tracker&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">component_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">package_name</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_track_alvar&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">executable</span><span class="p p-Indicator">:</span>  <span class="s">&quot;artag_remappable.launch&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">input_topics</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">camera_info</span><span class="p p-Indicator">:</span> <span class="s">&quot;camera_info&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">camera_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam/raw&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">output_topics</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">visualization_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;visualization_marker&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">tag_data</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_pose_marker&quot;</span>
-  <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
-    <span class="l l-Scalar l-Scalar-Plain">frame_id</span><span class="p p-Indicator">:</span> <span class="s">&quot;usb_cam&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="nt">component_name</span><span class="p">:</span> <span class="s">&quot;My</span><span class="nv"> </span><span class="s">AR</span><span class="nv"> </span><span class="s">tag</span><span class="nv"> </span><span class="s">tracker&quot;</span>
+  <span class="nt">component_type</span><span class="p">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
+  <span class="nt">package_name</span><span class="p">:</span> <span class="s">&quot;ar_track_alvar&quot;</span>
+  <span class="nt">executable</span><span class="p">:</span>  <span class="s">&quot;artag_remappable.launch&quot;</span>
+  <span class="nt">input_topics</span><span class="p">:</span>
+    <span class="nt">camera_info</span><span class="p">:</span> <span class="s">&quot;camera_info&quot;</span>
+    <span class="nt">camera_data</span><span class="p">:</span> <span class="s">&quot;usb_cam/raw&quot;</span>
+  <span class="nt">output_topics</span><span class="p">:</span>
+    <span class="nt">visualization_data</span><span class="p">:</span> <span class="s">&quot;visualization_marker&quot;</span>
+    <span class="nt">tag_data</span><span class="p">:</span> <span class="s">&quot;ar_pose_marker&quot;</span>
+  <span class="nt">required_parameters</span><span class="p">:</span>
+    <span class="nt">frame_id</span><span class="p">:</span> <span class="s">&quot;usb_cam&quot;</span>
 </pre></div>
 </div>
 <p>Again, when invoking components via a <cite>launch file</cite> then it’s especially importat that the <cite>launch file</cite>
@@ -512,23 +512,23 @@ TeMoto Workspace root directory.</p>
 </div>
 <p>If you aready have the <em>pipes.yaml</em> file then great, you can just append it.</p>
 <p>Here is an example how the <code class="docutils literal notranslate"><span class="pre">ar_tag_tracker_pipe</span></code> in <cite>pipes.yaml</cite> looks like:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="l l-Scalar l-Scalar-Plain">ar_tag_tracking</span><span class="p p-Indicator">:</span>
-<span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">method</span><span class="p p-Indicator">:</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">ar_tag_tracking</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">method</span><span class="p">:</span>
 
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">segment_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;2d_camera&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">segment_type</span><span class="p">:</span> <span class="s">&quot;2d_camera&quot;</span>
+    <span class="nt">required_parameters</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frame_id</span>
-    <span class="l l-Scalar l-Scalar-Plain">output_topic_types</span><span class="p p-Indicator">:</span>
+    <span class="nt">output_topic_types</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_info</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_data</span>
 
-  <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">segment_type</span><span class="p p-Indicator">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
-    <span class="l l-Scalar l-Scalar-Plain">required_parameters</span><span class="p p-Indicator">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">segment_type</span><span class="p">:</span> <span class="s">&quot;ar_tag_tracker&quot;</span>
+    <span class="nt">required_parameters</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">frame_id</span>
-    <span class="l l-Scalar l-Scalar-Plain">input_topic_types</span><span class="p p-Indicator">:</span>
+    <span class="nt">input_topic_types</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_info</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">camera_data</span>
-    <span class="l l-Scalar l-Scalar-Plain">output_topic_types</span><span class="p p-Indicator">:</span>
+    <span class="nt">output_topic_types</span><span class="p">:</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">visualization_data</span>
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">tag_data</span>
 </pre></div>
