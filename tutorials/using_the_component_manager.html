@@ -234,7 +234,7 @@ TeMoto Workspace root directory.</p>
 </ul>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p>The <cite>component_name</cite>, it’s <cite>type</cite> and the <cite>topic types</cite> are arbitrary, there are no hardcoded/preferred values in the Component Manager.</p>
+<p>The <cite>component_name</cite>, its <cite>type</cite> and the <cite>topic types</cite> are arbitrary, there are no hardcoded/preferred values in the Component Manager.</p>
 <p class="last"><strong>The key is to use the chosen names consistently</strong></p>
 </div>
 <p>For example, this is how the <em>component.yaml</em> file looks like for the <a class="reference external" href="http://wiki.ros.org/usb_cam">“usb_cam”</a> based camera component:</p>
@@ -264,9 +264,8 @@ if you want to enable remapping for your usb_cam based camera component.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">Pay close attention to whether your Action should be synchronous or asynchronous.</p>
 </div>
-<p>But first add Component Manager as a dependency in the <em>package.xml</em> and <em>CMakeLists.txt</em> files:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;build_depend&gt;</span>temoto_component_manager<span class="nt">&lt;/build_depend&gt;</span>
-<span class="nt">&lt;exec_depend&gt;</span>temoto_component_manager<span class="nt">&lt;/exec_depend&gt;</span>
+<p>But first add Component Manager as a dependency in the <em>package.xml</em> and <em>CMakeLists.txt</em> files of your action:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;depend&gt;</span>temoto_component_manager<span class="nt">&lt;/depend&gt;</span>
 </pre></div>
 </div>
 <div class="highlight-cmake notranslate"><div class="highlight"><pre><span></span><span class="nb">find_package</span><span class="p">(</span><span class="s">catkin</span> <span class="s">REQUIRED</span> <span class="s">COMPONENTS</span>
@@ -327,7 +326,7 @@ acquiring camera component via Component Manager Interface.</p>
   <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">camera_data_topic</span> <span class="o">=</span> <span class="n">responded_topics</span><span class="p">.</span><span class="n">getOutputTopic</span><span class="p">(</span><span class="s">&quot;camera_data&quot;</span><span class="p">);</span>
 
   <span class="c1">// Debug information</span>
-  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got camera data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">camera_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
+  <span class="n">TEMOTO_INFO_STREAM</span><span class="p">(</span><span class="s">&quot;Got camera data on topic &#39;&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">camera_data_topic</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;&#39;&quot;</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -338,7 +337,7 @@ acquiring camera component via Component Manager Interface.</p>
 </div>
 <div class="section" id="add-a-custom-recovery-routine">
 <h3>4) Add a custom recovery routine<a class="headerlink" href="#add-a-custom-recovery-routine" title="Permalink to this headline">¶</a></h3>
-<p>If the component should fail in any way that leads to it’s termination, the Component Manager will automatically send a
+<p>If the component should fail in any way that leads to its termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a component with similar parameters (component type, topic types, etc.) again but you can define your own custom routine
 that gets invoked instead.</p>
@@ -600,7 +599,7 @@ TeMoto Workspace root directory.</p>
 </div>
 <div class="section" id="id7">
 <h3>4) Add a custom recovery routine<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
-<p>If any pipe segment should fail in any way that leads to it’s termination, the Component Manager will automatically send a
+<p>If any pipe segment should fail in any way that leads to its termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a pipe with similar parameters again but you can define your own custom routine that gets invoked instead.</p>
 <p>For that create a method with a return type of <code class="docutils literal notranslate"><span class="pre">void</span></code> and which accepts <code class="docutils literal notranslate"><span class="pre">const</span> <span class="pre">temoto_component_manager::LoadPipe&amp;</span></code> reference:</p>

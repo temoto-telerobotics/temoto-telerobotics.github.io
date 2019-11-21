@@ -78,7 +78,7 @@ If you aready have the *components.yaml* file then great, you can just append it
 
 .. important:: 
 
-  The `component_name`, it's `type` and the `topic types` are arbitrary, there are no hardcoded/preferred values in the Component Manager.
+  The `component_name`, its `type` and the `topic types` are arbitrary, there are no hardcoded/preferred values in the Component Manager.
 
   **The key is to use the chosen names consistently**
 
@@ -108,12 +108,11 @@ Next we are going to modify the *.cpp* file of your Action and make it invoke th
 .. note:: Follow the *"Writing an Action*" tutorial if you haven't created a TeMoto Action yet.
 .. note:: Pay close attention to whether your Action should be synchronous or asynchronous.
 
-But first add Component Manager as a dependency in the *package.xml* and *CMakeLists.txt* files:
+But first add Component Manager as a dependency in the *package.xml* and *CMakeLists.txt* files of your action:
 
 .. code-block:: xml
 
-  <build_depend>temoto_component_manager</build_depend>
-  <exec_depend>temoto_component_manager</exec_depend>
+  <depend>temoto_component_manager</depend>
 
 .. code-block:: cmake
 
@@ -182,7 +181,7 @@ acquiring camera component via Component Manager Interface.
     std::string camera_data_topic = responded_topics.getOutputTopic("camera_data");
 
     // Debug information
-    TEMOTO_INFO_STREAM("Got camera data on topic '" << camera_topic << "'");
+    TEMOTO_INFO_STREAM("Got camera data on topic '" << camera_data_topic << "'");
   }
 
 .. note:: All started components are automatically stopped whenever the `ComponentManagerInterface` object is destroyed. The component can be explicitly stopped via `stopComponent` method 
@@ -190,7 +189,7 @@ acquiring camera component via Component Manager Interface.
 4) Add a custom recovery routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If the component should fail in any way that leads to it's termination, the Component Manager will automatically send a
+If the component should fail in any way that leads to its termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a component with similar parameters (component type, topic types, etc.) again but you can define your own custom routine
 that gets invoked instead. 
@@ -463,7 +462,7 @@ The steps in this sections are identical to what has been `described in here <#s
 4) Add a custom recovery routine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If any pipe segment should fail in any way that leads to it's termination, the Component Manager will automatically send a
+If any pipe segment should fail in any way that leads to its termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a pipe with similar parameters again but you can define your own custom routine that gets invoked instead. 
 
