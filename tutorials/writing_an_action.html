@@ -197,7 +197,7 @@
 <p class="caption"><span class="caption-text"><strong>Fig. 2:</strong> UMRF Editor tab</span></p>
 </div>
 <ul class="simple">
-<li>Modify the name by clicking on the “Name:” item in the UMRF viewer and changing the name in the item editor. In the given example, let’s call it <em>“add numbers”</em>.</li>
+<li>Modify the name by clicking on the “Name:” item in the UMRF viewer and changing the name in the item editor. In the given example, let’s call it <em>“add numbers”</em> (TODO: the name field has a bug, so ignore the name part)</li>
 <li>Add new input parameter by right-clicking on the “Input Parameters” item and selecing “Add new parameter”.</li>
 <li>Select the newly created parameter and change it’s name to <em>“input_1”</em> and it’s type to <em>“number”</em> (shown in Fig. 3).</li>
 <li>Add another input parameter and change it’s name to <em>“input_2”</em> and it’s type to <em>“number”</em>.</li>
@@ -283,7 +283,7 @@ gedit ta_add_numbers.cpp
 <h2>5) Build and test the action<a class="headerlink" href="#build-and-test-the-action" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>catkin build
 <span class="c1"># (source your workspace)</span>
-roslaunch NAME_OF_YOUR_ACTION action_test.launch
+roslaunch NAME_OF_YOUR_ACTION action_test_standalone.launch
 </pre></div>
 </div>
 <p>If you followed this tutorial step-by-step, then you should see this in the terminal output:</p>

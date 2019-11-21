@@ -44,7 +44,7 @@ Go to the *"UMRF Editor"* tab (depicted in Fig. 2). This tab consists of 2 main 
 
     **Fig. 2:** UMRF Editor tab 
 
-* Modify the name by clicking on the "Name:" item in the UMRF viewer and changing the name in the item editor. In the given example, let's call it *"add numbers"*.
+* Modify the name by clicking on the "Name:" item in the UMRF viewer and changing the name in the item editor. In the given example, let's call it *"add numbers"* (TODO: the name field has a bug, so ignore the name part)
 * Add new input parameter by right-clicking on the "Input Parameters" item and selecing "Add new parameter".
 * Select the newly created parameter and change it's name to *"input_1"* and it's type to *"number"* (shown in Fig. 3).
 * Add another input parameter and change it's name to *"input_2"* and it's type to *"number"*.
@@ -145,7 +145,7 @@ and replace it with code that adds up the numbers and puts the result to the out
 
    catkin build
    # (source your workspace)
-   roslaunch NAME_OF_YOUR_ACTION action_test.launch
+   roslaunch NAME_OF_YOUR_ACTION action_test_standalone.launch
 
 If you followed this tutorial step-by-step, then you should see this in the terminal output:
 
