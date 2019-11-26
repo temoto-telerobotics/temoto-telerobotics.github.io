@@ -1,8 +1,10 @@
 Creating TeMoto Workspace
 =========================
 |
-TeMoto workspace is a ROS package that conveniently bundles up different configuration and launch files that are necessary for your TeMoto setup.
+TeMoto workspace is a **ROS package** that conveniently bundles up different configuration and launch files that are necessary for **your TeMoto setup**.
 In order to create your custom temoto workspace, follow these steps:
+
+.. note:: Despite the7
 
 **1) Create a TeMoto workspace:**
 

@@ -84,7 +84,6 @@
 <li class="toctree-l1"><a class="reference internal" href="create_temoto_workspace.html">Creating TeMoto Workspace</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_an_action.html">Writing an Action</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using The Component Manager</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">C++ API reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#component-manager-overview">Component Manager Overview</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#describing-and-using-components">Describing and using Components</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-components-yaml-file">1) Create a <em>components.yaml</em> file</a></li>
@@ -96,10 +95,10 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#describing-and-using-pipes">Describing and using Pipes</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#create-a-pipes-yaml-file">1) Create a <em>pipes.yaml</em> file</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id6">2) Set up the Component Manager Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">2) Set up the Component Manager Interface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#start-the-pipe">3) Start the pipe</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id7">4) Add a custom recovery routine</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id8">5) Compile and test the action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">4) Add a custom recovery routine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">5) Compile and test the action</a></li>
 </ul>
 </li>
 </ul>
@@ -170,8 +169,11 @@
             
   <div class="section" id="using-the-component-manager">
 <h1>Using The Component Manager<a class="headerlink" href="#using-the-component-manager" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2><a class="reference external" href="../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html">C++ API reference</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html">C++ API reference</a></li>
+<li><a class="reference external" href="https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions">Code examples used in the tutorial</a></li>
+</ul>
+<hr class="docutils" />
 <p>This tutorial covers the basic usage of the Component Manager – a manager which maintains knowledge about different components,
 such as cameras, LIDARs, data processing algorithms, etc. Actions can utilize the functionality of any particular Manager through
 the interface of an according Manager and the Component Manager follows the same pattern.</p>
@@ -182,7 +184,6 @@ the interface of an according Manager and the Component Manager follows the same
 <li>start a component and a pipe via Component Manager Interface</li>
 <li>set up a custom component and pipe failure recovery routine</li>
 </ul>
-</div>
 <div class="section" id="component-manager-overview">
 <h2>Component Manager Overview<a class="headerlink" href="#component-manager-overview" title="Permalink to this headline">¶</a></h2>
 <p>Figure 1. shows the conceptual overview of how Component Manager works and how it’s used. The <strong>Component Manager</strong> itself is a ROS
@@ -196,14 +197,14 @@ run-time.</p>
 <strong>components.yaml</strong> file and the Component Manager is periodically going thorugh the <em>catkin_workspace/src</em> directory and looks
 recursively for <em>components.yaml</em> files (which means that you can have multiple <em>components.yaml</em> files, one per each component
 package if you like).</p>
-<div class="figure align-center" id="id9">
+<div class="figure align-center" id="id8">
 <a class="reference internal image-reference" href="_images/component_manager_concept.png"><img alt="_images/component_manager_concept.png" src="_images/component_manager_concept.png" style="width: 450px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 1:</strong> Conceptual overview of how Component Manager works and how it’s used.</span></p>
 </div>
 <p><strong>Pipe management</strong> is the second main feature of the Component Manager. Pipes are composed of <strong>segments</strong>, i.e., components, that sequentially pass
 data from one segment to another. For example Figure 2. depicts a pipe which tracks objects based on filtered video data. The pipes are described
 via <em>pipes.yaml</em>, which, similarly to <strong>components.yaml</strong> are periodically indexed by the Component Manager.</p>
-<div class="figure align-center" id="id10">
+<div class="figure align-center" id="id9">
 <a class="reference internal image-reference" href="_images/component_manager_pipe_example.png"><img alt="_images/component_manager_pipe_example.png" src="_images/component_manager_pipe_example.png" style="width: 400px;" /></a>
 <p class="caption"><span class="caption-text"><strong>Figure. 2:</strong> Example of a component pipe which tracks objects based on filtered video data.</span></p>
 </div>
@@ -250,7 +251,7 @@ TeMoto Workspace root directory.</p>
 </div>
 <p>This is just a simple example that gets the usb_cam recognized by the Context Manager. Unfortunately the default launch file that’s provided
 by the usb_cam package does not include argument remapping functionalities (important if you want your component to publish on a custom topic).
-You can use <a class="reference external" href="https://github.com/temoto-telerobotics-demos/icra_2020_ws/blob/jackal-ws/src/jackal_temoto_ws/jackal_temoto_ws/launch/usb_cam_remappable.launch">this launch file instead</a>
+You can use <a class="reference external" href="https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions/blob/master/tutorials_ws/tutorials_ws/launch/usb_cam_remappable.launch">this launch file instead</a>
 if you want to enable remapping for your usb_cam based camera component.</p>
 </div>
 <div class="section" id="set-up-the-component-manager-interface">
@@ -499,7 +500,7 @@ information about the parameters of the camera (camera info). So in our last exa
 </pre></div>
 </div>
 <p>Again, when invoking components via a <cite>launch file</cite> then it’s especially importat that the <cite>launch file</cite>
-allows remapping the input/output topics. Have a look at <a class="reference external" href="https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch">this as a reference</a>.</p>
+allows remapping the input/output topics. Have a look at <a class="reference external" href="https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions/blob/master/tutorials_ws/tutorials_ws/launch/artag_remappable.launch">this as a reference</a>.</p>
 <p>Now that the components are set up, the next step is to create a <em>pipes.yaml</em> file.</p>
 <div class="section" id="create-a-pipes-yaml-file">
 <h3>1) Create a <em>pipes.yaml</em> file<a class="headerlink" href="#create-a-pipes-yaml-file" title="Permalink to this headline">¶</a></h3>
@@ -565,8 +566,8 @@ TeMoto Workspace root directory.</p>
 <p class="last">The order of the segments in <cite>pipes.yaml</cite> file matters. That’s how the pipe will be assembled</p>
 </div>
 </div>
-<div class="section" id="id6">
-<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id5">
+<h3>2) Set up the Component Manager Interface<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
 <p>The steps in this sections are identical to what has been <a class="reference external" href="#set-up-the-component-manager-interface">described in here</a>.</p>
 </div>
 <div class="section" id="start-the-pipe">
@@ -597,8 +598,8 @@ TeMoto Workspace root directory.</p>
 <p class="last">All started pipes are automatically stopped whenever the <cite>ComponentManagerInterface</cite> object is destroyed. The pipe can be explicitly stopped via <cite>stopPipe</cite> method</p>
 </div>
 </div>
-<div class="section" id="id7">
-<h3>4) Add a custom recovery routine<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id6">
+<h3>4) Add a custom recovery routine<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
 <p>If any pipe segment should fail in any way that leads to its termination, the Component Manager will automatically send a
 message to Component Manager Interface, indicating the failure. By default the Component Manager Interface will load
 a pipe with similar parameters again but you can define your own custom routine that gets invoked instead.</p>
@@ -632,8 +633,8 @@ a pipe with similar parameters again but you can define your own custom routine 
 </pre></div>
 </div>
 </div>
-<div class="section" id="id8">
-<h3>5) Compile and test the action<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>5) Compile and test the action<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <ul>
 <li><p class="first">Compile the Action (<code class="docutils literal notranslate"><span class="pre">catkin</span> <span class="pre">build</span></code>).</p>
 </li>

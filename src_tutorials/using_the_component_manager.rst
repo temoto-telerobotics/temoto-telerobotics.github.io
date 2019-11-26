@@ -1,7 +1,9 @@
 Using The Component Manager
 ===========================
 
-`C++ API reference <../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html>`_
+* `C++ API reference <../api_doc/html/classtemoto__component__manager_1_1ComponentManagerInterface.html>`_
+* `Code examples used in the tutorial <https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions>`_
+
 ----------------------------------------------------------------------------------------------
 
 This tutorial covers the basic usage of the Component Manager -- a manager which maintains knowledge about different components,
@@ -97,7 +99,7 @@ For example, this is how the *component.yaml* file looks like for the `"usb_cam"
 
 This is just a simple example that gets the usb_cam recognized by the Context Manager. Unfortunately the default launch file that's provided
 by the usb_cam package does not include argument remapping functionalities (important if you want your component to publish on a custom topic).
-You can use `this launch file instead <https://github.com/temoto-telerobotics-demos/icra_2020_ws/blob/jackal-ws/src/jackal_temoto_ws/jackal_temoto_ws/launch/usb_cam_remappable.launch>`_
+You can use `this launch file instead <https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions/blob/master/tutorials_ws/tutorials_ws/launch/usb_cam_remappable.launch>`_
 if you want to enable remapping for your usb_cam based camera component.
 
 2) Set up the Component Manager Interface
@@ -361,7 +363,7 @@ information about the parameters of the camera (camera info). So in our last exa
       frame_id: "usb_cam"
 
 Again, when invoking components via a `launch file` then it's especially importat that the `launch file`
-allows remapping the input/output topics. Have a look at `this as a reference <https://github.com/temoto-telerobotics/temoto_examples/blob/robotont/temoto_examples/launch/artag_remappable.launch>`_. 
+allows remapping the input/output topics. Have a look at `this as a reference <https://github.com/temoto-telerobotics-demos/temoto_tutorial_solutions/blob/master/tutorials_ws/tutorials_ws/launch/artag_remappable.launch>`_. 
 
 Now that the components are set up, the next step is to create a *pipes.yaml* file.
 
