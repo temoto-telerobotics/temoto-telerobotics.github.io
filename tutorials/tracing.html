@@ -92,7 +92,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#set-up-the-trace-collector">3) Set-Up the Trace Collector</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#using-the-tracer">Using the Tracer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tracing-multiple-robots">Tracing Multiple Robots</a></li>
 </ul>
 </li>
 </ul>
@@ -190,11 +190,11 @@ catkin build --cmake-args -DTEMOTO_ENABLE_TRACING<span class="o">=</span>ON
 </div>
 <div class="section" id="set-up-the-tracer-library">
 <h3>2) Set-Up the Tracer Library<a class="headerlink" href="#set-up-the-tracer-library" title="Permalink to this headline">¶</a></h3>
-<p>TeMoto integrates a tracing library called <a class="reference external" href="https://github.com/opentracing/opentracing-cpp">OpenTracing</a> which
+<p>TeMoto integrates a tracing (client) library called <a class="reference external" href="https://github.com/opentracing/opentracing-cpp">OpenTracing</a> which
 provides the basic tracing functions and the API for a tracer. <a class="reference external" href="https://github.com/opentracing/opentracing-cpp">OpenTracing</a> is
 an open-source project that has been utilized as a base library by a number of tracing/trace-collector vendors. In this tutorial
 we are going to set up <a class="reference external" href="https://www.jaegertracing.io/">Jaeger</a>, an open source tracer that builds upon <a class="reference external" href="https://github.com/opentracing/opentracing-cpp">OpenTracing</a>.</p>
-<p>For that we need to build Jaeger manually, since it’s technically part of TeMoto and hence is not automatically built. For that do:</p>
+<p>For that we need to build Jaeger manually, since it’s technically not part of TeMoto and hence is not automatically built. For that do:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> &lt;YOUR/PREFERRED/PATH/FOR/RANDOM/REPOS&gt;
 git clone --branch v0.5.0 https://github.com/jaegertracing/jaeger-client-cpp
 <span class="nb">cd</span> jaeger-client-cpp
@@ -226,13 +226,13 @@ nano tracer_config.yaml
 </div>
 <div class="section" id="set-up-the-trace-collector">
 <h3>3) Set-Up the Trace Collector<a class="headerlink" href="#set-up-the-trace-collector" title="Permalink to this headline">¶</a></h3>
-<p>Now that the library has been configured, lets set-up the Jaeger client. The simplest way is to use
-a Docker container that has Jaeger trace collector server already installed and configured. If you just
-heard about Docker, then Google is your friend and <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">docker</span></code>. If Docker has been
-set up, then get the Jaeger Docker container <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">jaegertracing/all-in-one:1.17</span></code> (or get the
+<p>Now that the library has been configured, lets set-up the Jaeger collector and agent. The simplest way is to use
+a Docker container that has Jaeger collector, agent and query server already installed and configured. If you just
+heard about Docker, then Google is your friend and <code class="docutils literal notranslate"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">docker.io</span></code>. If Docker has been
+set up, then get the Jaeger Docker container <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">docker</span> <span class="pre">pull</span> <span class="pre">jaegertracing/all-in-one:1.17</span></code> (or get the
 latest version from <a class="reference external" href="https://www.jaegertracing.io/download/">here</a>).</p>
 <p>Run the tracer by:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker run <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo docker run <span class="se">\</span>
   --rm <span class="se">\</span>
   -p <span class="m">6831</span>:6831/udp <span class="se">\</span>
   -p <span class="m">6832</span>:6832/udp <span class="se">\</span>
@@ -246,11 +246,49 @@ latest version from <a class="reference external" href="https://www.jaegertracin
 <p class="last">Use the version of the Docker container you actually installed</p>
 </div>
 <p>and now open your browser and go to <code class="docutils literal notranslate"><span class="pre">http://localhost:16686</span></code>. Now you should see the Jaeger client interface.</p>
-</div>
-</div>
-<div class="section" id="using-the-tracer">
-<h2>Using the Tracer<a class="headerlink" href="#using-the-tracer" title="Permalink to this headline">¶</a></h2>
 <p>All you need to do now is launch TeMoto and play with the Jaeger GUI.</p>
+</div>
+</div>
+<div class="section" id="tracing-multiple-robots">
+<h2>Tracing Multiple Robots<a class="headerlink" href="#tracing-multiple-robots" title="Permalink to this headline">¶</a></h2>
+<p>The goal now is to collect traces that are produced by a multi-robot system which operates under same network.
+So for example (Figure 2) we have 3 robots and a monitoring computer (4 individual computers in total), which should capture
+the traces produced by the 3 robots.</p>
+<div class="figure align-center" id="id4">
+<a class="reference internal image-reference" href="_images/multi_robot_tracing.jpg"><img alt="_images/multi_robot_tracing.jpg" src="_images/multi_robot_tracing.jpg" style="width: 450px;" /></a>
+<p class="caption"><span class="caption-text"><strong>Figure. 2:</strong> Multi robot tracing setup.</span></p>
+</div>
+<p>Run the Jaeger collector on Sys-Monitor (for simplicity, lets just use the <cite>all-in-one</cite> docker container):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo docker run <span class="se">\</span>
+  --rm <span class="se">\</span>
+  -p <span class="m">6831</span>:6831/udp <span class="se">\</span>
+  -p <span class="m">6832</span>:6832/udp <span class="se">\</span>
+  -p <span class="m">16686</span>:16686 <span class="se">\</span>
+  -p <span class="m">14267</span>:14267 <span class="se">\</span>
+  -p <span class="m">14268</span>:14268 <span class="se">\</span>
+  -p <span class="m">9411</span>:9411 <span class="se">\</span>
+  jaegertracing/all-in-one:1.17 <span class="se">\</span>
+  --log-level<span class="o">=</span>debug
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This time we are exposing the ports <cite>14267</cite>, <cite>14268</cite> and <cite>9411</cite> of the collector, otherwise the remote Jaeger agents cannot
+find the Jaeger collector</p>
+</div>
+<p>With the setup shown in Figure 2, we need to tell the Jaeger agent of each robot where
+it should send its traces. So in this particular example the IP address of the Sys-Monitor is <cite>192.168.0.4</cite> and thus a Jaeger
+agent is run on each robot accordingly:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo docker run <span class="se">\</span>
+  --rm <span class="se">\</span>
+  -p5775:5775/udp <span class="se">\</span>
+  -p6831:6831/udp <span class="se">\</span>
+  -p6832:6832/udp <span class="se">\</span>
+  -p5778:5778/tcp <span class="se">\</span>
+  jaegertracing/jaeger-agent:1.17 <span class="se">\</span>
+  --collector.host-port<span class="o">=</span>http://192.168.0.4:14267
+</pre></div>
+</div>
 </div>
 </div>
 
