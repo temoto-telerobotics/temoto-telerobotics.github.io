@@ -145,4 +145,4 @@ agent is run on each robot accordingly:
     -p6832:6832/udp \
     -p5778:5778/tcp \
     jaegertracing/jaeger-agent:1.17 \
-    --collector.host-port=http://192.168.0.4:14267
+    --collector.host-port=192.168.0.4:14267
